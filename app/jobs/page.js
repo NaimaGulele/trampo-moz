@@ -1,24 +1,74 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import Navbar from "../components/Navbar";
 
 export default function Jobs() {
+  const [search, setSearch] = useState("");
+
+  const jobs = [
+    {
+      id: 1,
+      title: "Promotora",
+      location: "Maputo",
+      salary: "3500 MZN"
+    },
+    {
+      id: 2,
+      title: "Recepcionista",
+      location: "Matola",
+      salary: "5000 MZN"
+    }
+  ];
+
+  const filteredJobs = jobs.filter(job =>
+    job.title.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Jobs Available</h1>
+    <div style={{ fontFamily: "Arial" }}>
+      <Navbar />
 
-      <div>
-        <p>Promotora - Maputo - 3500 MZN</p>
-        <Link href="/jobs/1">View Details</Link>
+      <div style={{ padding: "30px" }}>
+        <h1>Available Jobs</h1>
+
+        {/* 🔍 SEARCH */}
+        <input
+          placeholder="Search job (e.g. promotora)"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          style={{
+            padding: "10px",
+            width: "100%",
+            marginBottom: "20px",
+            borderRadius: "6px",
+            border: "1px solid #ccc"
+          }}
+        />
+
+        {/* JOB LIST */}
+        {filteredJobs.map((job) => (
+          <div key={job.id} style={{
+            background: "#f5f5f5",
+            padding: "15px",
+            marginBottom: "15px",
+            borderRadius: "8px"
+          }}>
+            <h3>{job.title}</h3>
+            <p>{job.location}</p>
+            <p><b>{job.salary}</b></p>
+
+            <Link href={`/jobs/${job.id}`}>
+              View Details
+            </Link>
+          </div>
+        ))}
+
+        {filteredJobs.length === 0 && (
+          <p>No jobs found</p>
+        )}
       </div>
-
-      <br />
-
-      <div>
-        <p>Recepcionista - Matola - 5000 MZN</p>
-        <Link href="/jobs/2">View Details</Link>
-      </div>
-
-      <br />
-      <Link href="/">⬅️ Back Home</Link>
     </div>
   );
 }
