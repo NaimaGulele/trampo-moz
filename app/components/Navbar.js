@@ -3,35 +3,41 @@ import Logo from "./Logo";
 
 export default function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 bg-background border-b border-border shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <Logo />
+    <div style={{
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      padding: "20px 40px",
+      background: "#ffffff",
+      boxShadow: "0 2px 10px rgba(0,0,0,0.05)"
+    }}>
+      
+      <Logo />
 
-          <div className="flex gap-2 items-center">
-            <Link 
-              href="/" 
-              className="px-3 py-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
-            >
-              Home
-            </Link>
+      <div style={{ display: "flex", gap: "15px", alignItems: "center" }}>
+        
+        <Link href="/" style={{ textDecoration: "none", color: "#333" }}>
+          Home
+        </Link>
 
-            <Link 
-              href="/signin" 
-              className="px-3 py-2 text-sm font-medium text-primary hover:text-primary-dark transition-colors"
-            >
-              Sign Up
-            </Link>
+        <Link href="/signin" style={{
+          color: "#0070f3",
+          textDecoration: "none"
+        }}>
+          Sign In
+        </Link>
 
-            <Link 
-              href="/login" 
-              className="px-4 py-2 text-sm font-semibold bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
-            >
-              Log In
-            </Link>
-          </div>
-        </div>
+        <Link href="/login" style={{
+          background: "#0070f3",
+          color: "white",
+          padding: "8px 16px",
+          borderRadius: "6px",
+          textDecoration: "none"
+        }}>
+          Log In
+        </Link>
+
       </div>
-    </nav>
+    </div>
   );
 }
