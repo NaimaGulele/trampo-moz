@@ -56,40 +56,33 @@ export default function Navbar() {
           }
         }}>
           
-          <InteractiveLink href="/" style={navLinkStyle}
-            onMouseEnter={(e) => e.target.style.color = "#0070f3"}
-            onMouseLeave={(e) => e.target.style.color = "#333"}
-          >
+          <InteractiveLink href="/" style={navLinkStyle}>
             Home
           </InteractiveLink>
 
-          <InteractiveLink href="/jobs" style={navLinkStyle}
-            onMouseEnter={(e) => e.target.style.color = "#0070f3"}
-            onMouseLeave={(e) => e.target.style.color = "#333"}
-          >
+          <InteractiveLink href="/jobs" style={navLinkStyle}>
             Empregos
           </InteractiveLink>
 
-          <InteractiveLink href="/signin" style={{...navLinkStyle, color: "#0070f3"}}
-            onMouseEnter={(e) => e.target.style.color = "#0051cc"}
-            onMouseLeave={(e) => e.target.style.color = "#0070f3"}
-          >
+          <InteractiveLink href="/signin" style={{...navLinkStyle, color: "#0070f3"}}>
             Criar Conta
           </InteractiveLink>
 
-          <InteractiveLink href="/login" style={{
-            background: "#0070f3",
-            color: "white",
-            padding: "10px 20px",
-            borderRadius: "5px",
-            textDecoration: "none",
-            fontSize: "15px",
-            fontWeight: "500",
-            transition: "background 0.2s ease",
-            cursor: "pointer"
-          }}
-            onMouseEnter={(e) => e.target.style.background = "#0051cc"}
-            onMouseLeave={(e) => e.target.style.background = "#0070f3"}
+          <InteractiveLink 
+            href="/login" 
+            normalBgColor="#0070f3"
+            hoverBgColor="#0051cc"
+            style={{
+              background: "#0070f3",
+              color: "white",
+              padding: "10px 20px",
+              borderRadius: "5px",
+              textDecoration: "none",
+              fontSize: "15px",
+              fontWeight: "500",
+              transition: "background 0.2s ease",
+              cursor: "pointer"
+            }}
           >
             Entrar
           </InteractiveLink>
@@ -142,40 +135,58 @@ export default function Navbar() {
           animation: "slideDown 0.3s ease"
         }}>
           
-          <InteractiveLink href="/" onClick={() => setMobileOpen(false)} style={{
-            ...navLinkStyle,
-            padding: "16px 20px",
-            borderBottom: "1px solid #eee"
-          }}>
+          <InteractiveLink 
+            href="/" 
+            onClick={() => setMobileOpen(false)} 
+            style={{
+              ...navLinkStyle,
+              padding: "16px 20px",
+              borderBottom: "1px solid #eee"
+            }}
+          >
             Home
           </InteractiveLink>
 
-          <InteractiveLink href="/jobs" onClick={() => setMobileOpen(false)} style={{
-            ...navLinkStyle,
-            padding: "16px 20px",
-            borderBottom: "1px solid #eee"
-          }}>
+          <InteractiveLink 
+            href="/jobs" 
+            onClick={() => setMobileOpen(false)} 
+            style={{
+              ...navLinkStyle,
+              padding: "16px 20px",
+              borderBottom: "1px solid #eee"
+            }}
+          >
             Empregos
           </InteractiveLink>
 
-          <InteractiveLink href="/signin" onClick={() => setMobileOpen(false)} style={{
-            ...navLinkStyle,
-            padding: "16px 20px",
-            borderBottom: "1px solid #eee",
-            color: "#0070f3"
-          }}>
+          <InteractiveLink 
+            href="/signin" 
+            onClick={() => setMobileOpen(false)} 
+            style={{
+              ...navLinkStyle,
+              padding: "16px 20px",
+              borderBottom: "1px solid #eee",
+              color: "#0070f3"
+            }}
+          >
             Criar Conta
           </InteractiveLink>
 
-          <InteractiveLink href="/login" onClick={() => setMobileOpen(false)} style={{
-            padding: "16px 20px",
-            textDecoration: "none",
-            fontSize: "15px",
-            fontWeight: "500",
-            cursor: "pointer",
-            color: "white",
-            background: "#0070f3"
-          }}>
+          <InteractiveLink 
+            href="/login" 
+            onClick={() => setMobileOpen(false)} 
+            normalBgColor="#0070f3"
+            hoverBgColor="#0051cc"
+            style={{
+              padding: "16px 20px",
+              textDecoration: "none",
+              fontSize: "15px",
+              fontWeight: "500",
+              cursor: "pointer",
+              color: "white",
+              background: "#0070f3"
+            }}
+          >
             Entrar
           </InteractiveLink>
         </div>

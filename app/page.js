@@ -1,3 +1,5 @@
+"use client";
+
 import Navbar from "./components/Navbar"
 import Footer from "./components/Footer"
 import InteractiveLink from "./components/InteractiveLink"
@@ -41,40 +43,44 @@ export default function Home(){
           flexWrap:"wrap",
           marginBottom:"60px"
         }}>
-          <InteractiveLink href="/jobs" style={{
-            background:"#0070f3",
-            color:"white",
-            padding:"14px 32px",
-            borderRadius:"6px",
-            textDecoration:"none",
-            fontWeight:"bold",
-            fontSize:"clamp(14px, 3vw, 16px)",
-            transition:"all 0.3s ease",
-            minWidth:"140px",
-            textAlign:"center",
-            touchAction:"manipulation"
-          }}
-          onMouseEnter={(e) => e.target.style.background="#0051cc"}
-          onMouseLeave={(e) => e.target.style.background="#0070f3"}
+          <InteractiveLink 
+            href="/jobs" 
+            normalBgColor="#0070f3"
+            hoverBgColor="#0051cc"
+            style={{
+              color:"white",
+              padding:"14px 32px",
+              borderRadius:"6px",
+              textDecoration:"none",
+              fontWeight:"bold",
+              fontSize:"clamp(14px, 3vw, 16px)",
+              transition:"all 0.3s ease",
+              minWidth:"140px",
+              textAlign:"center",
+              touchAction:"manipulation",
+              background:"#0070f3"
+            }}
           >
             Ver Empregos
           </InteractiveLink>
 
-          <InteractiveLink href="/post" style={{
-            background:"#10b981",
-            color:"white",
-            padding:"14px 32px",
-            borderRadius:"6px",
-            textDecoration:"none",
-            fontWeight:"bold",
-            fontSize:"clamp(14px, 3vw, 16px)",
-            transition:"all 0.3s ease",
-            minWidth:"140px",
-            textAlign:"center",
-            touchAction:"manipulation"
-          }}
-          onMouseEnter={(e) => e.target.style.background="#059669"}
-          onMouseLeave={(e) => e.target.style.background="#10b981"}
+          <InteractiveLink 
+            href="/post" 
+            normalBgColor="#10b981"
+            hoverBgColor="#059669"
+            style={{
+              color:"white",
+              padding:"14px 32px",
+              borderRadius:"6px",
+              textDecoration:"none",
+              fontWeight:"bold",
+              fontSize:"clamp(14px, 3vw, 16px)",
+              transition:"all 0.3s ease",
+              minWidth:"140px",
+              textAlign:"center",
+              touchAction:"manipulation",
+              background:"#10b981"
+            }}
           >
             Postar Vaga
           </InteractiveLink>

@@ -71,16 +71,7 @@ export default function Jobs() {
                   transition: "all 0.2s ease",
                   cursor: "pointer",
                   boxShadow: "0 1px 3px rgba(0,0,0,0.05)"
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.1)";
-                  e.currentTarget.style.borderColor = "#0070f3";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)";
-                  e.currentTarget.style.borderColor = "#eee";
-                }}
-                >
+                }}>
                   <div style={{
                     display: "flex",
                     justifyContent: "space-between",
@@ -124,6 +115,17 @@ export default function Jobs() {
             </p>
           </div>
         )}
+
+        <style>{`
+          a[href*="/jobs/"] > div {
+            border-color: #eee;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+          }
+          a[href*="/jobs/"]:hover > div {
+            border-color: #0070f3;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          }
+        `}</style>
       </div>
     </div>
   );

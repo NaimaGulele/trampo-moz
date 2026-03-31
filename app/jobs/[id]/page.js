@@ -17,17 +17,17 @@ export default function JobDetails({ params }) {
         margin: "0 auto",
         padding: "40px 20px"
       }}>
-        <InteractiveLink href="/jobs" style={{
-          display: "inline-block",
-          marginBottom: "30px",
-          color: "#0070f3",
-          textDecoration: "none",
-          fontWeight: "bold",
-          fontSize: "15px",
-          transition: "color 0.2s ease"
-        }}
-        onMouseEnter={(e) => e.target.style.color = "#0051cc"}
-        onMouseLeave={(e) => e.target.style.color = "#0070f3"}
+        <InteractiveLink 
+          href="/jobs" 
+          style={{
+            display: "inline-block",
+            marginBottom: "30px",
+            color: "#0070f3",
+            textDecoration: "none",
+            fontWeight: "bold",
+            fontSize: "15px",
+            transition: "color 0.2s ease"
+          }}
         >
           ← Voltar aos Empregos
         </InteractiveLink>

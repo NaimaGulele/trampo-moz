@@ -1,24 +1,46 @@
 "use client";
 
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function InteractiveLink({ 
   href, 
   children, 
-  onMouseEnter, 
-  onMouseLeave, 
   style,
+  hoverBgColor,
+  normalBgColor,
+  onClick,
   ...props 
 }) {
+  const router = useRouter();
+  const [isHovering, setIsHovering] = useState(false);
+
+  const handleClick = (e) => {
+    if (onClick) {
+      onClick(e);
+    }
+    if (!e.defaultPrevented) {
+      e.preventDefault();
+      router.push(href);
+    }
+  };
+
+  const linkStyle = {
+    ...style,
+    ...(isHovering && hoverBgColor ? { backgroundColor: hoverBgColor } : {}),
+    ...(normalBgColor && !isHovering ? { backgroundColor: normalBgColor } : {}),
+  };
+
   return (
-    <Link 
+    <a 
       href={href}
-      style={style}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      style={linkStyle}
+      onClick={handleClick}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
       {...props}
     >
       {children}
-    </Link>
+    </a>
   );
 }
