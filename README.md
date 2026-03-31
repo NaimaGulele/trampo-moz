@@ -1,36 +1,149 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TrampoMoz - Job Board Platform
 
-## Getting Started
+A modern job board platform for connecting job seekers and employers in Mozambique.
 
-First, run the development server:
+## 🎯 Features
 
+- **Browse Jobs**: Search and filter available job opportunities by title and location
+- **Post Jobs**: Employers can quickly post new job openings with validation
+- **User Authentication**: Sign up and login functionality with email and password validation
+- **Job Details**: View complete job information with apply and save options
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Modern UI**: Clean, professional design with smooth interactions
+
+## 🛠 Tech Stack
+
+- **Framework**: Next.js (React)
+- **Styling**: Inline CSS with modern design patterns
+- **State Management**: React hooks (useState)
+
+## 📁 Project Structure
+
+```
+app/
+├── page.js                    # Home page with hero section
+├── login/
+│   └── page.js               # Login page with validation
+├── signin/
+│   └── page.js               # Sign up page with form validation
+├── post/
+│   └── page.js               # Post a job form
+├── jobs/
+│   ├── page.js               # Jobs listing with search
+│   └── [id]/
+│       └── page.js           # Individual job details
+└── components/
+    ├── Navbar.js             # Navigation bar with links
+    ├── Logo.js               # Logo component
+    ├── FormInput.js          # Reusable form input
+    ├── Textarea.js           # Reusable textarea
+    ├── Button.js             # Reusable button with variants
+    ├── ErrorMessage.js       # Error message display
+    ├── Container.js          # Layout container
+    └── Card.js               # Card component
+```
+
+## 🎨 Components
+
+### Reusable Components
+
+- **FormInput**: Text, email, and number inputs with labels and focus states
+- **Textarea**: Multi-line text input with auto-resize
+- **Button**: Customizable buttons with variants (primary, secondary, outline)
+- **ErrorMessage**: Error alert with icon
+- **Card**: Container for content sections
+- **Container**: Max-width wrapper for consistent spacing
+
+## 🚀 Getting Started
+
+1. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+2. Run the development server:
 ```bash
 npm run dev
 # or
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🎨 Color Scheme
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Primary Blue**: #0070f3
+- **Secondary Green**: #10b981
+- **Light Background**: #f5f7fb
+- **White**: #ffffff
+- **Dark Text**: #222222
+- **Gray Text**: #666666
+- **Gray Border**: #ddd
 
-## Learn More
+## ✅ Features Implemented
 
-To learn more about Next.js, take a look at the following resources:
+- ✅ Home page with hero section and features grid
+- ✅ User authentication (login/signup) with validation
+- ✅ Job listing page with search functionality
+- ✅ Job posting form with validation
+- ✅ Job details page with save and apply options
+- ✅ Responsive navbar with navigation
+- ✅ Reusable UI components
+- ✅ Error handling and user feedback
+- ✅ Loading states on forms
+- ✅ Hover effects and transitions
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📝 Form Validations
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Login Form
+- Email validation (must contain @)
+- Password required
+- Success feedback with alert
 
-## Deploy on Vercel
+### Sign Up Form
+- Full name required
+- Email validation
+- Password minimum 6 characters
+- Password confirmation match
+- Success feedback
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Job Posting Form
+- Job title required
+- Location required
+- Salary validation (must be positive number)
+- Description required
+- Success feedback
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🔮 Future Enhancements
+
+- Database integration for persistent storage
+- User profiles and saved jobs
+- Job application tracking
+- Email notifications
+- Admin dashboard
+- Advanced search filters (category, salary range, company)
+- Company profiles
+- Application management system
+
+## 📌 Notes
+
+- Forms currently use demo functionality with alerts
+- Job listings are empty until connected to a database
+- All components are ready to integrate with backend API
+- Uses modern React patterns with hooks
+
+## 📦 Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+
+---
+
+Built with ❤️ using Next.js and React | TrampoMoz 2024
