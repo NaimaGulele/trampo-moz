@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 import FormInput from "../components/FormInput";
 import Button from "../components/Button";
 import ErrorMessage from "../components/ErrorMessage";
-import Link from "next/link";
+import InteractiveLink from "../components/InteractiveLink";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -18,19 +18,19 @@ export default function Login() {
     setError("");
 
     if (!email || !password) {
-      setError("Please fill in all fields");
+      setError("Por favor, preencha todos os campos");
       return;
     }
 
     if (!email.includes("@")) {
-      setError("Please enter a valid email");
+      setError("Por favor, insira um email válido");
       return;
     }
 
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      alert("Login successful!");
+      alert("Login realizado com sucesso!");
       setEmail("");
       setPassword("");
     }, 1000);
@@ -49,36 +49,38 @@ export default function Login() {
       }}>
         <div style={{
           background: "white",
-          padding: "40px",
+          padding: "40px 24px",
           borderRadius: "8px",
           boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
           width: "100%",
           maxWidth: "400px"
         }}>
-          <h1 style={{ fontSize: "28px", marginBottom: "10px", color: "#222" }}>
-            Welcome Back
+          <h1 style={{ fontSize: "clamp(24px, 6vw, 28px)", marginBottom: "10px", color: "#222" }}>
+            Bem-vindo de Volta
           </h1>
-          <p style={{ color: "#555", marginBottom: "30px" }}>
-            Sign in to your account
+          <p style={{ color: "#555", marginBottom: "30px", fontSize: "14px" }}>
+            Acesse sua conta TrampoMoz
           </p>
 
           <ErrorMessage message={error} />
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
             <FormInput
               label="Email"
               type="email"
-              placeholder="your@email.com"
+              placeholder="seu@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
 
             <FormInput
-              label="Password"
+              label="Senha"
               type="password"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
 
             <div style={{ marginBottom: "20px" }}>
@@ -87,16 +89,16 @@ export default function Login() {
                 disabled={loading}
                 onClick={handleSubmit}
               >
-                {loading ? "Signing in..." : "Log In"}
+                {loading ? "Entrando..." : "Entrar"}
               </Button>
             </div>
           </form>
 
           <p style={{ textAlign: "center", marginTop: "20px", color: "#555", fontSize: "14px" }}>
-            Don&apos;t have an account?{" "}
-            <Link href="/signin" style={{ color: "#0070f3", fontWeight: "bold", textDecoration: "none" }}>
-              Sign up
-            </Link>
+            Não tem uma conta?{" "}
+            <InteractiveLink href="/signin" style={{ color: "#0070f3", fontWeight: "bold", textDecoration: "none" }}>
+              Crie uma agora
+            </InteractiveLink>
           </p>
         </div>
       </div>

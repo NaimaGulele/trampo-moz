@@ -20,19 +20,19 @@ export default function PostJob() {
     setError("");
 
     if (!title || !location || !salary || !description) {
-      setError("Please fill in all fields");
+      setError("Por favor, preencha todos os campos");
       return;
     }
 
     if (isNaN(salary) || salary <= 0) {
-      setError("Please enter a valid salary");
+      setError("Por favor, insira um salário válido em MZN");
       return;
     }
 
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      alert("Job posted successfully!");
+      alert("Vaga publicada com sucesso!");
       setTitle("");
       setLocation("");
       setSalary("");
@@ -53,52 +53,56 @@ export default function PostJob() {
       }}>
         <div style={{
           background: "white",
-          padding: "40px",
+          padding: "40px 24px",
           borderRadius: "8px",
           boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
           width: "100%",
           maxWidth: "500px"
         }}>
-          <h1 style={{ fontSize: "28px", marginBottom: "10px", color: "#222" }}>
-            Post a New Job
+          <h1 style={{ fontSize: "clamp(24px, 6vw, 28px)", marginBottom: "10px", color: "#222" }}>
+            Publicar Vaga
           </h1>
-          <p style={{ color: "#555", marginBottom: "30px" }}>
-            Share your job opening with our community
+          <p style={{ color: "#555", marginBottom: "30px", fontSize: "14px" }}>
+            Compartilhe sua oportunidade com profissionais em Moçambique
           </p>
 
           <ErrorMessage message={error} />
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
             <FormInput
-              label="Job Title"
+              label="Título da Vaga"
               type="text"
-              placeholder="e.g., Senior Developer"
+              placeholder="ex: Desenvolvedor Senior"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              required
             />
 
             <FormInput
-              label="Location"
+              label="Localidade"
               type="text"
-              placeholder="e.g., Maputo, Mozambique"
+              placeholder="ex: Maputo, Matola, Beira"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
+              required
             />
 
             <FormInput
-              label="Salary (MZN)"
+              label="Salário (MZN)"
               type="number"
-              placeholder="e.g., 25000"
+              placeholder="ex: 25000"
               value={salary}
               onChange={(e) => setSalary(e.target.value)}
+              required
             />
 
             <Textarea
-              label="Job Description"
-              placeholder="Describe the role, responsibilities, and requirements..."
+              label="Descrição da Vaga"
+              placeholder="Descreva a função, responsabilidades e requisitos..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={6}
+              required
             />
 
             <div style={{ marginBottom: "20px" }}>
@@ -107,7 +111,7 @@ export default function PostJob() {
                 disabled={loading}
                 onClick={handleSubmit}
               >
-                {loading ? "Posting..." : "Post Job"}
+                {loading ? "Publicando..." : "Publicar Vaga"}
               </Button>
             </div>
           </form>

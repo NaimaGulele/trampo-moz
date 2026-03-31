@@ -1,4 +1,4 @@
-import Link from "next/link";
+import InteractiveLink from "./InteractiveLink";
 
 export default function Footer() {
   return (
@@ -23,45 +23,53 @@ export default function Footer() {
       >
         <div>
           <h3 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "15px" }}>
-            About
+            Sobre
           </h3>
           <p style={{ color: "#ccc", fontSize: "14px", lineHeight: "1.6", margin: "0" }}>
-            TrampoMoz connects job seekers with employers in Mozambique, providing opportunities for career growth.
+            TrampoMoz conecta profissionais com empresas em Moçambique, oferecendo oportunidades de crescimento profissional em Maputo, Matola e todo o país.
           </p>
         </div>
 
         <div>
           <h3 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "15px" }}>
-            Quick Links
+            Links Rápidos
           </h3>
           <ul style={{ listStyle: "none", padding: "0", margin: "0" }}>
             <li style={{ marginBottom: "10px" }}>
-              <Link href="/jobs" style={{ color: "#0070f3", textDecoration: "none" }}>
-                Browse Jobs
-              </Link>
+              <InteractiveLink href="/jobs" style={{ color: "#0070f3", textDecoration: "none" }}>
+                Ver Empregos
+              </InteractiveLink>
             </li>
             <li style={{ marginBottom: "10px" }}>
-              <Link href="/post" style={{ color: "#0070f3", textDecoration: "none" }}>
-                Post a Job
-              </Link>
+              <InteractiveLink href="/post" style={{ color: "#0070f3", textDecoration: "none" }}>
+                Publicar Vaga
+              </InteractiveLink>
             </li>
             <li style={{ marginBottom: "10px" }}>
-              <Link href="/signin" style={{ color: "#0070f3", textDecoration: "none" }}>
-                Sign Up
-              </Link>
+              <InteractiveLink href="/signin" style={{ color: "#0070f3", textDecoration: "none" }}>
+                Criar Conta
+              </InteractiveLink>
+            </li>
+            <li style={{ marginBottom: "10px" }}>
+              <InteractiveLink href="/login" style={{ color: "#0070f3", textDecoration: "none" }}>
+                Entrar
+              </InteractiveLink>
             </li>
           </ul>
         </div>
 
         <div>
           <h3 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "15px" }}>
-            Contact
+            Contato
           </h3>
           <p style={{ color: "#ccc", fontSize: "14px", margin: "0" }}>
-            📧 support@trampomoz.com
+            📧 contato@trampomoz.com
           </p>
           <p style={{ color: "#ccc", fontSize: "14px", margin: "10px 0 0 0" }}>
-            📱 +258 21 123 456
+            📱 +258 84 123 456
+          </p>
+          <p style={{ color: "#ccc", fontSize: "14px", margin: "10px 0 0 0" }}>
+            📍 Maputo, Moçambique
           </p>
         </div>
       </div>
@@ -76,7 +84,10 @@ export default function Footer() {
         }}
       >
         <p style={{ margin: "0" }}>
-          © 2024 TrampoMoz. All rights reserved.
+          © 2024 TrampoMoz. Todos os direitos reservados.
+        </p>
+        <p style={{ margin: "8px 0 0 0", fontSize: "12px" }}>
+          Plataforma de empregos para Moçambique - Conectando profissionais e empresas
         </p>
       </div>
     </footer>

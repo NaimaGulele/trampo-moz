@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 import FormInput from "../components/FormInput";
 import Button from "../components/Button";
 import ErrorMessage from "../components/ErrorMessage";
-import Link from "next/link";
+import InteractiveLink from "../components/InteractiveLink";
 
 export default function SignIn() {
   const [name, setName] = useState("");
@@ -20,29 +20,29 @@ export default function SignIn() {
     setError("");
 
     if (!name || !email || !password || !confirmPassword) {
-      setError("Please fill in all fields");
+      setError("Por favor, preencha todos os campos");
       return;
     }
 
     if (!email.includes("@")) {
-      setError("Please enter a valid email");
+      setError("Por favor, insira um email válido");
       return;
     }
 
     if (password.length < 6) {
-      setError("Password must be at least 6 characters");
+      setError("A senha deve ter pelo menos 6 caracteres");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("As senhas não coincidem");
       return;
     }
 
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      alert("Account created successfully!");
+      alert("Conta criada com sucesso!");
       setName("");
       setEmail("");
       setPassword("");
@@ -63,52 +63,56 @@ export default function SignIn() {
       }}>
         <div style={{
           background: "white",
-          padding: "40px",
+          padding: "40px 24px",
           borderRadius: "8px",
           boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
           width: "100%",
           maxWidth: "400px"
         }}>
-          <h1 style={{ fontSize: "28px", marginBottom: "10px", color: "#222" }}>
-            Create Account
+          <h1 style={{ fontSize: "clamp(24px, 6vw, 28px)", marginBottom: "10px", color: "#222" }}>
+            Criar Conta
           </h1>
-          <p style={{ color: "#555", marginBottom: "30px" }}>
-            Join TrampoMoz today
+          <p style={{ color: "#555", marginBottom: "30px", fontSize: "14px" }}>
+            Junte-se ao TrampoMoz e encontre seu emprego
           </p>
 
           <ErrorMessage message={error} />
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
             <FormInput
-              label="Full Name"
+              label="Nome Completo"
               type="text"
-              placeholder="John Doe"
+              placeholder="João Silva"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             />
 
             <FormInput
               label="Email"
               type="email"
-              placeholder="your@email.com"
+              placeholder="seu@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
 
             <FormInput
-              label="Password"
+              label="Senha"
               type="password"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
 
             <FormInput
-              label="Confirm Password"
+              label="Confirmar Senha"
               type="password"
               placeholder="••••••••"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              required
             />
 
             <div style={{ marginBottom: "20px" }}>
@@ -117,16 +121,16 @@ export default function SignIn() {
                 disabled={loading}
                 onClick={handleSubmit}
               >
-                {loading ? "Creating account..." : "Sign Up"}
+                {loading ? "Criando conta..." : "Criar Conta"}
               </Button>
             </div>
           </form>
 
           <p style={{ textAlign: "center", marginTop: "20px", color: "#555", fontSize: "14px" }}>
-            Already have an account?{" "}
-            <Link href="/login" style={{ color: "#0070f3", fontWeight: "bold", textDecoration: "none" }}>
-              Log in
-            </Link>
+            Já tem uma conta?{" "}
+            <InteractiveLink href="/login" style={{ color: "#0070f3", fontWeight: "bold", textDecoration: "none" }}>
+              Faça login
+            </InteractiveLink>
           </p>
         </div>
       </div>

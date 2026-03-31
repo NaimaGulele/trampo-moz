@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import InteractiveLink from "../components/InteractiveLink";
 import Navbar from "../components/Navbar";
 
 export default function Jobs() {
@@ -23,27 +24,31 @@ export default function Jobs() {
         padding: "40px 20px"
       }}>
         <div style={{ marginBottom: "40px" }}>
-          <h1 style={{ fontSize: "36px", color: "#222", marginBottom: "10px" }}>
-            Available Jobs
+          <h1 style={{ fontSize: "clamp(28px, 8vw, 36px)", color: "#222", marginBottom: "10px" }}>
+            Empregos Disponíveis
           </h1>
-          <p style={{ color: "#555", fontSize: "16px" }}>
-            {jobs.length} jobs available
+          <p style={{ color: "#555", fontSize: "clamp(14px, 3vw, 16px)", margin: "0" }}>
+            {jobs.length === 0 ? "Confira em breve nossas vagas" : `${jobs.length} ${jobs.length === 1 ? "vaga disponível" : "vagas disponíveis"}`}
           </p>
         </div>
 
         <div style={{ marginBottom: "30px" }}>
           <input
-            placeholder="Search by job title or location..."
+            placeholder="Buscar por título ou localidade..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            aria-label="Buscar empregos"
             style={{
-              padding: "14px",
+              padding: "12px 16px",
               width: "100%",
               borderRadius: "6px",
-              border: "1px solid #ddd",
+              border: "2px solid #ddd",
               fontSize: "16px",
-              boxSizing: "border-box"
+              boxSizing: "border-box",
+              transition: "border-color 0.2s ease"
             }}
+            onFocus={(e) => (e.target.style.borderColor = "#0070f3")}
+            onBlur={(e) => (e.target.style.borderColor = "#ddd")}
           />
         </div>
 
@@ -53,7 +58,7 @@ export default function Jobs() {
             gap: "20px"
           }}>
             {filteredJobs.map((job) => (
-              <Link
+              <InteractiveLink
                 key={job.id}
                 href={`/jobs/${job.id}`}
                 style={{ textDecoration: "none", color: "inherit" }}
@@ -103,19 +108,19 @@ export default function Jobs() {
                     <span>{job.type}</span>
                   </div>
                 </div>
-              </Link>
+              </InteractiveLink>
             ))}
           </div>
         ) : (
           <div style={{
             background: "white",
-            padding: "40px",
+            padding: "40px 20px",
             textAlign: "center",
             borderRadius: "8px",
             border: "1px solid #eee"
           }}>
             <p style={{ color: "#999", fontSize: "16px", margin: "0" }}>
-              {jobs.length === 0 ? "No jobs available yet. Check back soon!" : "No jobs found matching your search."}
+              {jobs.length === 0 ? "Nenhuma vaga disponível no momento. Volte em breve!" : "Nenhuma vaga encontrada com sua busca. Tente outros termos."}
             </p>
           </div>
         )}
