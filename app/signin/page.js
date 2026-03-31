@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import Navbar from "../components/Navbar";
 import FormInput from "../components/FormInput";
 import Button from "../components/Button";
@@ -14,8 +16,10 @@ export default function SignIn() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const supabase = createClient();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -40,14 +44,38 @@ export default function SignIn() {
     }
 
     setLoading(true);
-    setTimeout(() => {
+    
+    try {
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/jobs`,
+          data: {
+            full_name: name,
+            role: 'job_seeker'
+          }
+        }
+      });
+
+      if (signUpError) {
+        if (signUpError.message.includes("already registered")) {
+          setError("Este email já está registado. Faça login.");
+        } else {
+          setError(signUpError.message);
+        }
+        setLoading(false);
+        return;
+      }
+
+      // If signup successful, redirect to jobs page
+      if (data.user) {
+        router.push("/jobs");
+      }
+    } catch (err) {
+      setError("Ocorreu um erro. Tente novamente.");
       setLoading(false);
-      alert("Conta criada com sucesso!");
-      setName("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-    }, 1000);
+    }
   };
 
   return (

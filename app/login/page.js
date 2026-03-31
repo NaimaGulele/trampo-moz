@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import Navbar from "../components/Navbar";
 import FormInput from "../components/FormInput";
 import Button from "../components/Button";
@@ -12,8 +14,10 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const supabase = createClient();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -28,12 +32,31 @@ export default function Login() {
     }
 
     setLoading(true);
-    setTimeout(() => {
+    
+    try {
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (signInError) {
+        if (signInError.message.includes("Invalid login credentials")) {
+          setError("Email ou senha incorretos");
+        } else {
+          setError(signInError.message);
+        }
+        setLoading(false);
+        return;
+      }
+
+      // If login successful, redirect to jobs page
+      if (data.user) {
+        router.push("/jobs");
+      }
+    } catch (err) {
+      setError("Ocorreu um erro. Tente novamente.");
       setLoading(false);
-      alert("Login realizado com sucesso!");
-      setEmail("");
-      setPassword("");
-    }, 1000);
+    }
   };
 
   return (

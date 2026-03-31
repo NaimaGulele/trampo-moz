@@ -1,4 +1,5 @@
 import './globals.css'
+import { AuthProvider } from '@/lib/auth-context'
 
 export const metadata = {
   title: 'TrampoMoz - Plataforma de Empregos em Moçambique',
@@ -36,7 +37,9 @@ export default function RootLayout({ children }) {
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body style={{margin: 0, padding: 0, fontFamily: "Arial, sans-serif", backgroundColor: "#f5f7fb"}}>
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   )

@@ -1,12 +1,21 @@
 "use client";
 
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Logo from "./Logo";
 import { useState } from "react";
 import InteractiveLink from "./InteractiveLink";
+import { useAuth } from "@/lib/auth-context";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user, loading, signOut } = useAuth();
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push("/");
+    setMobileOpen(false);
+  };
 
   const navLinkStyle = {
     textDecoration: "none",
@@ -64,28 +73,63 @@ export default function Navbar() {
             Empregos
           </InteractiveLink>
 
-          <InteractiveLink href="/signin" style={{...navLinkStyle, color: "#0070f3"}}>
-            Criar Conta
-          </InteractiveLink>
+          {!loading && !user && (
+            <>
+              <InteractiveLink href="/signin" style={{...navLinkStyle, color: "#0070f3"}}>
+                Criar Conta
+              </InteractiveLink>
 
-          <InteractiveLink 
-            href="/login" 
-            normalBgColor="#0070f3"
-            hoverBgColor="#0051cc"
-            style={{
-              background: "#0070f3",
-              color: "white",
-              padding: "10px 20px",
-              borderRadius: "5px",
-              textDecoration: "none",
-              fontSize: "15px",
-              fontWeight: "500",
-              transition: "background 0.2s ease",
-              cursor: "pointer"
-            }}
-          >
-            Entrar
-          </InteractiveLink>
+              <InteractiveLink 
+                href="/login" 
+                normalBgColor="#0070f3"
+                hoverBgColor="#0051cc"
+                style={{
+                  background: "#0070f3",
+                  color: "white",
+                  padding: "10px 20px",
+                  borderRadius: "5px",
+                  textDecoration: "none",
+                  fontSize: "15px",
+                  fontWeight: "500",
+                  transition: "background 0.2s ease",
+                  cursor: "pointer"
+                }}
+              >
+                Entrar
+              </InteractiveLink>
+            </>
+          )}
+
+          {!loading && user && (
+            <>
+              <InteractiveLink href="/post" style={{...navLinkStyle, color: "#0070f3"}}>
+                Publicar Vaga
+              </InteractiveLink>
+
+              <span style={{ color: "#666", fontSize: "14px" }}>
+                {user.user_metadata?.full_name || user.email?.split("@")[0]}
+              </span>
+
+              <button
+                onClick={handleSignOut}
+                style={{
+                  background: "#f44336",
+                  color: "white",
+                  padding: "10px 20px",
+                  borderRadius: "5px",
+                  border: "none",
+                  fontSize: "15px",
+                  fontWeight: "500",
+                  cursor: "pointer",
+                  transition: "background 0.2s ease"
+                }}
+                onMouseOver={(e) => e.target.style.background = "#d32f2f"}
+                onMouseOut={(e) => e.target.style.background = "#f44336"}
+              >
+                Sair
+              </button>
+            </>
+          )}
         </div>
 
         {/* Mobile Hamburger Button */}
@@ -159,36 +203,83 @@ export default function Navbar() {
             Empregos
           </InteractiveLink>
 
-          <InteractiveLink 
-            href="/signin" 
-            onClick={() => setMobileOpen(false)} 
-            style={{
-              ...navLinkStyle,
-              padding: "16px 20px",
-              borderBottom: "1px solid #eee",
-              color: "#0070f3"
-            }}
-          >
-            Criar Conta
-          </InteractiveLink>
+          {!loading && !user && (
+            <>
+              <InteractiveLink 
+                href="/signin" 
+                onClick={() => setMobileOpen(false)} 
+                style={{
+                  ...navLinkStyle,
+                  padding: "16px 20px",
+                  borderBottom: "1px solid #eee",
+                  color: "#0070f3"
+                }}
+              >
+                Criar Conta
+              </InteractiveLink>
 
-          <InteractiveLink 
-            href="/login" 
-            onClick={() => setMobileOpen(false)} 
-            normalBgColor="#0070f3"
-            hoverBgColor="#0051cc"
-            style={{
-              padding: "16px 20px",
-              textDecoration: "none",
-              fontSize: "15px",
-              fontWeight: "500",
-              cursor: "pointer",
-              color: "white",
-              background: "#0070f3"
-            }}
-          >
-            Entrar
-          </InteractiveLink>
+              <InteractiveLink 
+                href="/login" 
+                onClick={() => setMobileOpen(false)} 
+                normalBgColor="#0070f3"
+                hoverBgColor="#0051cc"
+                style={{
+                  padding: "16px 20px",
+                  textDecoration: "none",
+                  fontSize: "15px",
+                  fontWeight: "500",
+                  cursor: "pointer",
+                  color: "white",
+                  background: "#0070f3"
+                }}
+              >
+                Entrar
+              </InteractiveLink>
+            </>
+          )}
+
+          {!loading && user && (
+            <>
+              <InteractiveLink 
+                href="/post" 
+                onClick={() => setMobileOpen(false)} 
+                style={{
+                  ...navLinkStyle,
+                  padding: "16px 20px",
+                  borderBottom: "1px solid #eee",
+                  color: "#0070f3"
+                }}
+              >
+                Publicar Vaga
+              </InteractiveLink>
+
+              <div style={{
+                padding: "16px 20px",
+                borderBottom: "1px solid #eee",
+                color: "#666",
+                fontSize: "14px"
+              }}>
+                {user.user_metadata?.full_name || user.email?.split("@")[0]}
+              </div>
+
+              <button
+                onClick={handleSignOut}
+                style={{
+                  padding: "16px 20px",
+                  textDecoration: "none",
+                  fontSize: "15px",
+                  fontWeight: "500",
+                  cursor: "pointer",
+                  color: "white",
+                  background: "#f44336",
+                  border: "none",
+                  textAlign: "left"
+                }}
+              >
+                Sair
+              </button>
+            </>
+          )}
         </div>
       )}
 
