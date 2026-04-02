@@ -11,49 +11,39 @@ export default function Navbar() {
   const navLinkStyle = {
     textDecoration: "none",
     color: "#333",
-    fontSize: "15px",
+    fontSize: "clamp(14px, 3vw, 15px)",
     fontWeight: "500",
     transition: "color 0.2s ease",
-    cursor: "pointer"
-  };
-
-  const mobileNavStyle = {
-    position: "absolute",
-    top: "70px",
-    left: "0",
-    right: "0",
-    background: "#ffffff",
-    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-    display: mobileOpen ? "flex" : "none",
-    flexDirection: "column",
-    gap: "0",
-    zIndex: "99"
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: "44px",
+    minWidth: "44px"
   };
 
   return (
     <>
-      <div style={{
+      <nav style={{
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "16px 20px",
+        padding: "clamp(12px, 4vw, 16px) clamp(16px, 5vw, 20px)",
         background: "#ffffff",
         boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
         position: "sticky",
         top: "0",
-        zIndex: "100"
+        zIndex: "100",
+        gap: "16px"
       }}>
         
         <Logo />
 
         {/* Desktop Navigation */}
-        <div style={{ 
+        <div className="desktop-nav" style={{ 
           display: "flex", 
-          gap: "25px", 
-          alignItems: "center",
-          "@media (maxWidth: 768px)": {
-            display: "none"
-          }
+          gap: "clamp(16px, 3vw, 25px)", 
+          alignItems: "center"
         }}>
           
           <InteractiveLink href="/" style={navLinkStyle}>
@@ -91,48 +81,61 @@ export default function Navbar() {
         {/* Mobile Hamburger Button */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
+          className="mobile-menu-btn"
+          aria-label="Menu de navegação"
+          aria-expanded={mobileOpen}
           style={{
-            display: "none",
-            "@media (maxWidth: 768px)": {
-              display: "block"
-            },
             background: "none",
             border: "none",
             cursor: "pointer",
-            fontSize: "24px",
+            fontSize: "clamp(20px, 5vw, 24px)",
             color: "#333",
-            padding: "5px 10px"
+            padding: "12px 12px",
+            minHeight: "44px",
+            minWidth: "44px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            touchAction: "manipulation",
+            WebkitTapHighlightColor: "transparent",
+            transition: "all 0.2s ease"
           }}
-          aria-label="Menu de navegação"
-          aria-expanded={mobileOpen}
-          className="mobile-menu-btn"
         >
           {mobileOpen ? "✕" : "☰"}
         </button>
-      </div>
+      </nav>
 
       {/* Mobile Navigation Menu */}
       <style>{`
         @media (max-width: 768px) {
+          .desktop-nav {
+            display: none !important;
+          }
+        }
+
+        @media (min-width: 769px) {
           .mobile-menu-btn {
-            display: block !important;
+            display: none !important;
           }
         }
       `}</style>
       
       {mobileOpen && (
-        <div style={{
-          position: "absolute",
-          top: "70px",
+        <div className="mobile-nav-menu" style={{
+          position: "fixed",
+          top: "calc(44px + clamp(12px, 4vw, 16px) + clamp(12px, 4vw, 16px))",
           left: "0",
           right: "0",
           background: "#ffffff",
-          boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.12)",
           display: "flex",
           flexDirection: "column",
           gap: "0",
           zIndex: "99",
-          animation: "slideDown 0.3s ease"
+          animation: "slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+          maxHeight: "calc(100vh - 44px)",
+          overflowY: "auto",
+          WebkitOverflowScrolling: "touch"
         }}>
           
           <InteractiveLink 
@@ -140,8 +143,11 @@ export default function Navbar() {
             onClick={() => setMobileOpen(false)} 
             style={{
               ...navLinkStyle,
-              padding: "16px 20px",
-              borderBottom: "1px solid #eee"
+              padding: "16px clamp(16px, 5vw, 20px)",
+              borderBottom: "1px solid #eee",
+              width: "100%",
+              justifyContent: "flex-start",
+              minHeight: "auto"
             }}
           >
             Home
@@ -152,8 +158,11 @@ export default function Navbar() {
             onClick={() => setMobileOpen(false)} 
             style={{
               ...navLinkStyle,
-              padding: "16px 20px",
-              borderBottom: "1px solid #eee"
+              padding: "16px clamp(16px, 5vw, 20px)",
+              borderBottom: "1px solid #eee",
+              width: "100%",
+              justifyContent: "flex-start",
+              minHeight: "auto"
             }}
           >
             Empregos
@@ -164,9 +173,12 @@ export default function Navbar() {
             onClick={() => setMobileOpen(false)} 
             style={{
               ...navLinkStyle,
-              padding: "16px 20px",
+              padding: "16px clamp(16px, 5vw, 20px)",
               borderBottom: "1px solid #eee",
-              color: "#0070f3"
+              color: "#0070f3",
+              width: "100%",
+              justifyContent: "flex-start",
+              minHeight: "auto"
             }}
           >
             Criar Conta
@@ -175,16 +187,21 @@ export default function Navbar() {
           <InteractiveLink 
             href="/login" 
             onClick={() => setMobileOpen(false)} 
-            normalBgColor="#0070f3"
-            hoverBgColor="#0051cc"
             style={{
-              padding: "16px 20px",
+              padding: "16px clamp(16px, 5vw, 20px)",
               textDecoration: "none",
-              fontSize: "15px",
+              fontSize: "clamp(14px, 3vw, 15px)",
               fontWeight: "500",
               cursor: "pointer",
               color: "white",
-              background: "#0070f3"
+              background: "#0070f3",
+              transition: "all 0.2s ease",
+              display: "block",
+              width: "100%",
+              textAlign: "left",
+              minHeight: "44px",
+              display: "flex",
+              alignItems: "center"
             }}
           >
             Entrar
@@ -196,11 +213,17 @@ export default function Navbar() {
         @keyframes slideDown {
           from {
             opacity: 0;
-            transform: translateY(-10px);
+            transform: translateY(-12px);
           }
           to {
             opacity: 1;
             transform: translateY(0);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .mobile-nav-menu {
+            animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
           }
         }
       `}</style>

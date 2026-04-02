@@ -25,11 +25,29 @@
   --shadow-lg: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Performance optimizations */
+html {
+  scroll-behavior: smooth;
+}
+
 /* Accessibility improvements */
 * {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fast interactions */
+a, button, input, textarea, select {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Optimized animations */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    will-change: auto;
+  }
 }
 
 /* Remove default margins */
@@ -119,20 +137,113 @@ input, textarea {
   font-size: 16px;
 }
 
+/* Interactive link styles with CSS hover/active */
+.interactive-link {
+  cursor: pointer;
+  display: inline-block;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.interactive-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.interactive-link:active {
+  transform: translateY(0);
+}
+
 /* Mobile optimization */
 @media (max-width: 768px) {
   body {
     font-size: 16px; /* Prevents zoom on iOS */
   }
   
-  button, a.button {
+  h1, h2, h3, h4, h5, h6 {
+    word-break: break-word;
+  }
+  
+  button, a.button, .interactive-link {
     min-height: 44px; /* Touch target minimum */
     min-width: 44px;
+    padding: 12px 16px;
+    font-size: 16px; /* Prevents zoom on input focus */
   }
   
   /* Better spacing for touch */
   a, button {
     padding: 12px 16px;
+  }
+  
+  /* Optimize grid on mobile */
+  [style*="grid"] {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  
+  /* Full width on mobile */
+  input, textarea, select {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  /* Improved tap feedback */
+  button:active, 
+  a:active,
+  .interactive-link:active {
+    opacity: 0.8;
+  }
+}
+
+/* Tablet optimization */
+@media (min-width: 769px) and (max-width: 1024px) {
+  h1 {
+    font-size: clamp(24px, 5vw, 40px);
+  }
+  
+  h2 {
+    font-size: clamp(20px, 4vw, 32px);
+  }
+}
+
+/* Landscape mobile optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+  body {
+    padding-top: 60px;
+  }
+  
+  h1 {
+    font-size: clamp(20px, 5vw, 32px);
+    margin-bottom: 10px;
+  }
+  
+  [style*="padding: 40px"] {
+    padding: 20px 16px !important;
+  }
+}
+
+/* Fast interaction feedback */
+button:active,
+a:active,
+.interactive-link:active {
+  transform: scale(0.98);
+}
+
+/* Optimized input focus */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Smooth scroll behavior */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }
 
@@ -142,6 +253,7 @@ input, textarea {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
