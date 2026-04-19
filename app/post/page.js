@@ -1,122 +1,69 @@
 "use client";
-
 import { useState } from "react";
-import Navbar from "../components/Navbar";
-import FormInput from "../components/FormInput";
-import Textarea from "../components/Textarea";
-import Button from "../components/Button";
-import ErrorMessage from "../components/ErrorMessage";
+import { useRouter } from "next/navigation";
 
-export default function PostJob() {
-  const [title, setTitle] = useState("");
-  const [location, setLocation] = useState("");
-  const [salary, setSalary] = useState("");
-  const [description, setDescription] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+export default function PostJobPage() {
+  const router = useRouter();
+  const [jobData, setJobData] = useState({
+    title: "",
+    company: "",
+    location: "",
+    type: "Full-time",
+    description: "",
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
-
-    if (!title || !location || !salary || !description) {
-      setError("Por favor, preencha todos os campos");
-      return;
-    }
-
-    if (isNaN(salary) || salary <= 0) {
-      setError("Por favor, insira um salário válido em MZN");
-      return;
-    }
-
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      alert("Vaga publicada com sucesso!");
-      setTitle("");
-      setLocation("");
-      setSalary("");
-      setDescription("");
-    }, 1000);
+    // In real app, save to database
+    alert("Job posted successfully!");
+    router.push("/jobs");
   };
 
   return (
-    <div style={{ fontFamily: "Arial", minHeight: "100vh", background: "#f5f7fb" }}>
-      <Navbar />
+    <div className="post-job-container">
+      <h1>Post a Job</h1>
+      <p>Reach qualified candidates in Mozambique</p>
 
-      <div style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "calc(100vh - 80px)",
-        padding: "20px"
-      }}>
-        <div style={{
-          background: "white",
-          padding: "40px 24px",
-          borderRadius: "8px",
-          boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-          width: "100%",
-          maxWidth: "500px"
-        }}>
-          <h1 style={{ fontSize: "clamp(24px, 6vw, 28px)", marginBottom: "10px", color: "#222" }}>
-            Publicar Vaga
-          </h1>
-          <p style={{ color: "#555", marginBottom: "30px", fontSize: "14px" }}>
-            Compartilhe sua oportunidade com profissionais em Moçambique
-          </p>
-
-          <ErrorMessage message={error} />
-
-          <form onSubmit={handleSubmit} noValidate>
-            <FormInput
-              label="Título da Vaga"
-              type="text"
-              placeholder="ex: Desenvolvedor Senior"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-
-            <FormInput
-              label="Localidade"
-              type="text"
-              placeholder="ex: Maputo, Matola, Beira"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              required
-            />
-
-            <FormInput
-              label="Salário (MZN)"
-              type="number"
-              placeholder="ex: 25000"
-              value={salary}
-              onChange={(e) => setSalary(e.target.value)}
-              required
-            />
-
-            <Textarea
-              label="Descrição da Vaga"
-              placeholder="Descreva a função, responsabilidades e requisitos..."
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={6}
-              required
-            />
-
-            <div style={{ marginBottom: "20px" }}>
-              <Button
-                variant="secondary"
-                disabled={loading}
-                onClick={handleSubmit}
-              >
-                {loading ? "Publicando..." : "Publicar Vaga"}
-              </Button>
-            </div>
-          </form>
-        </div>
-      </div>
+      <form onSubmit={handleSubmit} className="post-job-form">
+        <input
+          type="text"
+          placeholder="Job Title"
+          value={jobData.title}
+          onChange={(e) => setJobData({ ...jobData, title: e.target.value })}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Company Name"
+          value={jobData.company}
+          onChange={(e) => setJobData({ ...jobData, company: e.target.value })}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Location (e.g., Maputo, Matola)"
+          value={jobData.location}
+          onChange={(e) => setJobData({ ...jobData, location: e.target.value })}
+          required
+        />
+        <select
+          value={jobData.type}
+          onChange={(e) => setJobData({ ...jobData, type: e.target.value })}
+        >
+          <option>Full-time</option>
+          <option>Part-time</option>
+          <option>Remote</option>
+          <option>Contract</option>
+        </select>
+        <textarea
+          placeholder="Job Description"
+          rows="5"
+          value={jobData.description}
+          onChange={(e) => setJobData({ ...jobData, description: e.target.value })}
+          required
+        />
+        <button type="submit" className="btn-primary">📢 Post Job</button>
+      </form>
     </div>
   );
 }
