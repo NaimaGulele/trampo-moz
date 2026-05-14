@@ -1,43 +1,36 @@
-import Link from "next/link";
-import Logo from "./Logo";
+﻿"use client";
 
-export default function Navbar() {
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import Logo from "./Logo";
+import { isAuthenticated } from "../../lib/auth";
+
+export default function Navbar({ showAuth = true }) {
+  const [isLogged, setIsLogged] = useState(false);
+
+  useEffect(() => {
+    setIsLogged(isAuthenticated());
+  }, []);
+
   return (
-    <div style={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      padding: "20px 40px",
-      background: "#ffffff",
-      boxShadow: "0 2px 10px rgba(0,0,0,0.05)"
-    }}>
-      
+    <nav className="flex flex-wrap items-center justify-between gap-3 p-4 bg-white shadow-sm">
       <Logo />
 
-      <div style={{ display: "flex", gap: "15px", alignItems: "center" }}>
-        
-        <Link href="/" style={{ textDecoration: "none", color: "#333" }}>
-          Home
-        </Link>
-
-        <Link href="/signin" style={{
-          color: "#0070f3",
-          textDecoration: "none"
-        }}>
-          Sign In
-        </Link>
-
-        <Link href="/login" style={{
-          background: "#0070f3",
-          color: "white",
-          padding: "8px 16px",
-          borderRadius: "6px",
-          textDecoration: "none"
-        }}>
-          Log In
-        </Link>
-
-      </div>
-    </div>
+      {showAuth && !isLogged ? (
+        <div className="flex flex-wrap items-center gap-3 text-sm">
+          <Link href="/login" className="text-gray-700 hover:text-blue-600">
+            Entrar
+          </Link>
+          <Link
+            href="/signup"
+            className="rounded-full bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700"
+          >
+            Criar conta
+          </Link>
+        </div>
+      ) : (
+        <div />
+      )}
+    </nav>
   );
 }

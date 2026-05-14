@@ -1,36 +1,43 @@
-﻿"use client";
+"use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Logo from "../components/Logo";
-import { findUser, setAuth } from "../../lib/auth";
+import { findUser, saveUser, setAuth } from "../../lib/auth";
 
-export default function Login() {
+export default function Signup() {
   const router = useRouter();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = () => {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const prefillEmail = params.get("email");
+      if (prefillEmail) {
+        setEmail(prefillEmail.toLowerCase());
+      }
+    }
+  }, []);
+
+  const handleSignup = () => {
     const normalizedEmail = email.trim().toLowerCase();
-    if (!normalizedEmail || !password) {
-      setError("Preencha email e senha para entrar.");
+    if (!name || !normalizedEmail || !password) {
+      setError("Preencha nome, email e senha para criar conta.");
       return;
     }
 
-    const user = findUser(normalizedEmail);
-    if (!user) {
-      setError("Usuário inexistente. Crie uma conta para continuar.");
+    const existingUser = findUser(normalizedEmail);
+    if (existingUser) {
+      setError("Este email já existe. Faça login com sua conta.");
       return;
     }
 
-    if (user.password !== password) {
-      setError("Senha incorreta. Verifique seus dados.");
-      return;
-    }
-
-    setAuth(user.email);
+    saveUser({ name, email: normalizedEmail, password });
+    setAuth(normalizedEmail);
     router.push("/");
   };
 
@@ -41,7 +48,15 @@ export default function Login() {
           <div className="mb-6 flex justify-center">
             <Logo />
           </div>
-          <h2 className="text-2xl font-bold text-center mb-6">Entrar</h2>
+          <h2 className="text-2xl font-bold text-center mb-6">Criar conta</h2>
+
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Nome completo"
+            className="w-full mb-3 rounded-2xl border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
+          />
 
           <input
             type="email"
@@ -71,25 +86,16 @@ export default function Login() {
           {error && <p className="mb-4 text-sm text-red-600 font-semibold bg-red-50 p-3 rounded-lg">{error}</p>}
 
           <button
-            onClick={handleLogin}
+            onClick={handleSignup}
             className="w-full rounded-2xl bg-blue-600 py-3 text-white transition hover:bg-blue-700 font-semibold"
           >
-            Entrar
+            Criar conta
           </button>
 
-          {error && error.includes("Usuário inexistente") && (
-            <button
-              onClick={() => router.push(`/signup?email=${encodeURIComponent(email)}`)}
-              className="w-full mt-3 rounded-2xl border border-blue-600 py-3 text-blue-600 transition hover:bg-blue-50 font-semibold"
-            >
-              Criar conta
-            </button>
-          )}
-
           <p className="text-center text-sm mt-4 text-gray-600">
-            Não tens conta?{' '}
-            <Link href="/signup" className="text-blue-600 hover:underline">
-              Criar conta
+            Já tens conta?{' '}
+            <Link href="/login" className="text-blue-600 hover:underline">
+              Entrar
             </Link>
           </p>
         </div>

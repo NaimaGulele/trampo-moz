@@ -3,12 +3,11 @@ import Link from "next/link";
 export default function JobDetails({ params }) {
   return (
     <div style={{ padding: "40px", fontFamily: "Arial, sans-serif", backgroundColor: "#eef2f7", minHeight: "100vh" }}>
-      <h1 style={{ color: "#0d6efd", marginBottom: "20px" }}>Job Details</h1>
+      <h1 style={{ color: "#0d6efd", marginBottom: "20px" }}>Detalhes da vaga</h1>
 
-      <p style={{ fontSize: "1.2rem", marginBottom: "10px" }}>Job ID: {params.id}</p>
-      <p style={{ fontSize: "1.2rem", marginBottom: "20px" }}>Salary paid in MZN 💰</p>
+      <p style={{ fontSize: "1.2rem", marginBottom: "10px" }}>ID da vaga: {params.id}</p>
 
-      <Link href="/jobs" style={{
+      <Link href="/dashboard" style={{
         display: "inline-block",
         marginTop: "20px",
         backgroundColor: "#6c757d",
@@ -16,7 +15,22 @@ export default function JobDetails({ params }) {
         padding: "10px 20px",
         borderRadius: "8px",
         textDecoration: "none"
-      }}>⬅️ Back to Jobs</Link>
+      }}>
+        Voltar ao painel
+      </Link>
+
+      <Link href={`/jobs/${params.id}/apply`} style={{
+        display: "inline-block",
+        marginTop: "20px",
+        marginLeft: "10px",
+        backgroundColor: "#16a34a",
+        color: "white",
+        padding: "10px 20px",
+        borderRadius: "8px",
+        textDecoration: "none"
+      }}>
+        Candidatar-se
+      </Link>
     </div>
   );
 }

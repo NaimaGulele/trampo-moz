@@ -5,6 +5,8 @@ export const metadata = {
   description: 'Find and post jobs in Mozambique',
 }
 
+export const viewport = 'width=device-width, initial-scale=1.0'
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
