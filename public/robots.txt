@@ -16,4 +16,4 @@ Disallow: /*.json$
 Crawl-delay: 1
 
 # Sitemap location
-Sitemap: https://trampomoz.vercel.app/sitemap.xml
+Sitemap: https://trampo-3xuwf0mib-naima-guleles-projects.vercel.app/sitemap.xml

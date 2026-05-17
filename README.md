@@ -135,6 +135,10 @@ npm run dev
 ```
 Abrir [http://localhost:3000](http://localhost:3000)
 
+### 2.1. Preview de produção
+A versão mais recente do app está publicada em:
+https://trampo-3xuwf0mib-naima-guleles-projects.vercel.app
+
 ### 3. Build para Produção
 ```bash
 npm run build
