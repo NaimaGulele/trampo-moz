@@ -3,10 +3,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Logo from "../components/Logo";
+import LanguageSelector from "../components/LanguageSelector";
+import { useLanguage } from "../context/LanguageContext";
 import { findUser, saveUser, saveProfile, setAuth } from "../../lib/auth";
 
 export default function Signup() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,13 +34,13 @@ export default function Signup() {
   const handleSignup = () => {
     const normalizedEmail = email.trim().toLowerCase();
     if (!name || !normalizedEmail || !password) {
-      setError("Preencha nome, email e senha para criar conta.");
+      setError(t.signup.errorEmpty);
       return;
     }
 
     const existingUser = findUser(normalizedEmail);
     if (existingUser) {
-      setError("Este email já existe. Faça login com sua conta.");
+      setError(t.signup.errorExists);
       return;
     }
 
@@ -56,70 +59,172 @@ export default function Signup() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col bg-gray-50">
-      <div className="flex-1 flex items-center justify-center p-6">
-        <div className="w-full max-w-sm bg-white p-6 rounded-3xl shadow-lg">
-          <div className="mb-6 flex justify-center">
+    <main style={{ minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "var(--background)" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 20px", borderBottom: "1px solid var(--border)" }}>
+        <Logo />
+        <LanguageSelector />
+      </div>
+
+      <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
+        <div style={{ width: "100%", maxWidth: "400px", background: "white", padding: "32px 24px", borderRadius: "12px", boxShadow: "var(--shadow-lg)", border: "1px solid var(--border-light)" }}>
+          <div style={{ marginBottom: "24px", display: "flex", justifyContent: "center" }}>
             <Logo />
           </div>
-          <h2 className="text-2xl font-bold text-center mb-6">Criar conta</h2>
 
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Nome completo"
-            className="w-full mb-3 rounded-2xl border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
-          />
+          <h2 style={{ fontSize: "1.75rem", fontWeight: 700, textAlign: "center", marginBottom: "32px", color: "var(--foreground)" }}>
+            {t.signup.title}
+          </h2>
 
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            className="w-full mb-1 rounded-2xl border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
-          />
-          <p className="text-xs text-gray-500 mb-3">Use seu email real, ele será usado nas candidaturas e para recuperar seu acesso.</p>
-
-          <div className="relative mb-4">
+          <div style={{ marginBottom: "16px" }}>
+            <label style={{ display: "block", fontSize: "0.9rem", fontWeight: 500, marginBottom: "8px", color: "var(--text-secondary)" }}>
+              {t.signup.fullName}
+            </label>
             <input
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Senha"
-              className="w-full rounded-2xl border border-gray-300 p-3 pr-12 focus:border-blue-500 focus:outline-none"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="João Silva"
+              style={{
+                width: "100%",
+                padding: "12px 14px",
+                borderRadius: "8px",
+                border: "1px solid var(--border)",
+                fontSize: "1rem",
+                fontFamily: "inherit",
+                boxSizing: "border-box",
+                transition: "border-color 0.2s ease"
+              }}
+              onFocus={(e) => e.target.style.borderColor = "var(--primary)"}
+              onBlur={(e) => e.target.style.borderColor = "var(--border)"}
             />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-            >
-              {showPassword ? "🙈" : "👁️"}
-            </button>
           </div>
 
-          {error && <p className="mb-4 text-sm text-red-600 font-semibold bg-red-50 p-3 rounded-lg">{error}</p>}
+          <div style={{ marginBottom: "16px" }}>
+            <label style={{ display: "block", fontSize: "0.9rem", fontWeight: 500, marginBottom: "8px", color: "var(--text-secondary)" }}>
+              {t.signup.email}
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="seu@email.com"
+              style={{
+                width: "100%",
+                padding: "12px 14px",
+                borderRadius: "8px",
+                border: "1px solid var(--border)",
+                fontSize: "1rem",
+                fontFamily: "inherit",
+                boxSizing: "border-box",
+                transition: "border-color 0.2s ease"
+              }}
+              onFocus={(e) => e.target.style.borderColor = "var(--primary)"}
+              onBlur={(e) => e.target.style.borderColor = "var(--border)"}
+            />
+            <p style={{ fontSize: "0.8rem", color: "var(--text-tertiary)", marginTop: "6px", margin: "6px 0 0 0" }}>
+              {t.signup.emailHint}
+            </p>
+          </div>
+
+          <div style={{ marginBottom: "24px" }}>
+            <label style={{ display: "block", fontSize: "0.9rem", fontWeight: 500, marginBottom: "8px", color: "var(--text-secondary)" }}>
+              {t.signup.password}
+            </label>
+            <div style={{ position: "relative" }}>
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                style={{
+                  width: "100%",
+                  padding: "12px 14px",
+                  paddingRight: "44px",
+                  borderRadius: "8px",
+                  border: "1px solid var(--border)",
+                  fontSize: "1rem",
+                  fontFamily: "inherit",
+                  boxSizing: "border-box",
+                  transition: "border-color 0.2s ease"
+                }}
+                onFocus={(e) => e.target.style.borderColor = "var(--primary)"}
+                onBlur={(e) => e.target.style.borderColor = "var(--border)"}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  position: "absolute",
+                  right: "12px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: "1.2rem",
+                  color: "var(--text-tertiary)"
+                }}
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
+          </div>
+
+          {error && (
+            <div style={{ 
+              marginBottom: "20px", 
+              padding: "12px 14px",
+              backgroundColor: "var(--error-light)",
+              border: "1px solid var(--error)",
+              color: "var(--error)",
+              borderRadius: "8px",
+              fontSize: "0.9rem",
+              fontWeight: 500
+            }}>
+              {error}
+            </div>
+          )}
 
           <button
             onClick={handleSignup}
-            className="w-full rounded-2xl bg-blue-600 py-3 text-white transition hover:bg-blue-700 font-semibold"
+            style={{
+              width: "100%",
+              padding: "12px 16px",
+              borderRadius: "8px",
+              background: "var(--primary)",
+              color: "white",
+              border: "none",
+              fontSize: "1rem",
+              fontWeight: 600,
+              cursor: "pointer",
+              transition: "background 0.2s ease"
+            }}
+            onMouseEnter={(e) => e.target.style.background = "var(--primary-dark)"}
+            onMouseLeave={(e) => e.target.style.background = "var(--primary)"}
           >
-            Criar conta
+            {t.signup.submit}
           </button>
 
-          <p className="text-center text-sm mt-4 text-gray-600">
-            Já tens conta?{' '}
-            <Link href={`/login?redirect=${encodeURIComponent(redirect)}`} className="text-blue-600 hover:underline">
-              Entrar
+          <p style={{ textAlign: "center", fontSize: "0.9rem", marginTop: "20px", color: "var(--text-secondary)" }}>
+            {t.signup.haveAccount}{' '}
+            <Link href={`/login?redirect=${encodeURIComponent(redirect)}`} style={{ color: "var(--primary)", fontWeight: 600, textDecoration: "none", borderBottom: "1px solid var(--primary)" }}>
+              {t.signup.login}
             </Link>
           </p>
         </div>
       </div>
 
-      <footer className="border-t border-gray-200 bg-white py-6 text-center text-sm text-gray-600">
-        <p className="mb-2">Trampo Moz - Encontre emprego em Moçambique</p>
-        <p>Email: suporte@trampomoz.co.mz</p>
-        <p>Contacto: +258 84 000 0000</p>
+      <footer style={{ 
+        borderTop: "1px solid var(--border)", 
+        background: "white", 
+        padding: "20px", 
+        textAlign: "center", 
+        fontSize: "0.9rem",
+        color: "var(--text-secondary)"
+      }}>
+        <p style={{ marginBottom: "8px" }}>{t.footer.company}</p>
+        <p style={{ marginBottom: "4px" }}>{t.footer.email}</p>
+        <p>{t.footer.contact}</p>
       </footer>
     </main>
   );

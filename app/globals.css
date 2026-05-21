@@ -1,28 +1,42 @@
 @import "tailwindcss";
 
-/* TrampoMoz Color System */
+/* TrampoMoz Color System - Professional Mozambican Aesthetic */
 :root {
-  --primary: #0070f3;
-  --primary-dark: #0051cc;
-  --secondary: #10b981;
-  --secondary-dark: #059669;
+  /* Primary Colors - Warm Professional Tones */
+  --primary: #D85F3A;
+  --primary-dark: #B84A28;
+  --primary-light: #E8755A;
   
-  --background: #f5f7fb;
-  --foreground: #222222;
-  --text-secondary: #666666;
-  --text-tertiary: #999999;
-  --border: #ddd;
-  --border-light: #eee;
+  /* Secondary - Deep Professional Green */
+  --secondary: #2D5845;
+  --secondary-dark: #1F3C30;
+  --secondary-light: #3F7A62;
+  
+  /* Neutral Colors */
+  --background: #FAFAF9;
+  --background-alt: #F5F4F0;
+  --foreground: #1A1410;
+  --text-secondary: #5C5552;
+  --text-tertiary: #8B8680;
+  --border: #DDD8D2;
+  --border-light: #EDE9E2;
   
   --white: #ffffff;
-  --error: #dc3545;
-  --success: #28a745;
-  --warning: #ffc107;
-  --info: #17a2b8;
+  --accent: #D4A574;
   
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 2px 10px rgba(0, 0, 0, 0.1);
+  /* Status Colors */
+  --error: #C63238;
+  --error-light: #F8D7DA;
+  --success: #2D5845;
+  --success-light: #D4EDDA;
+  --warning: #E67E22;
+  --info: #D85F3A;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
 /* Accessibility improvements */

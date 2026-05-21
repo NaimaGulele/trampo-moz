@@ -1,77 +1,171 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "./components/Navbar";
+import { useLanguage } from "./context/LanguageContext";
 import { isAuthenticated } from "../lib/auth";
 
 export default function Home() {
   const [isLogged, setIsLogged] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     setIsLogged(isAuthenticated());
   }, []);
 
   return (
-    <div style={{ fontFamily: "Arial" }}>
+    <div style={{ fontFamily: "Arial, sans-serif", backgroundColor: "var(--background)", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <Navbar />
 
-      <main style={{ padding: "20px", maxWidth: "860px", margin: "0 auto" }}>
-        <section style={{ marginBottom: "30px" }}>
-          <h1 style={{ fontSize: "clamp(1.75rem, 5vw, 2.75rem)", lineHeight: "1.1", marginBottom: "18px" }}>
-            Bem-vindo ao Trampo Moz
+      <main style={{ flex: 1, padding: "20px", maxWidth: "900px", margin: "0 auto", width: "100%" }}>
+        {/* Hero Section */}
+        <section style={{ marginBottom: "50px", textAlign: "center", paddingTop: "40px" }}>
+          <h1 style={{ 
+            fontSize: "clamp(2rem, 6vw, 3.5rem)", 
+            lineHeight: "1.2", 
+            marginBottom: "20px",
+            color: "var(--foreground)",
+            fontWeight: 700
+          }}>
+            {t.home.welcome}
           </h1>
-          <p style={{ fontSize: "clamp(0.95rem, 4vw, 1.1rem)", color: "#444", marginBottom: "24px", lineHeight: "1.6" }}>
-            Encontre vagas em Moçambique, publique oportunidades e gerencie o seu perfil profissional em um só lugar.
+          <p style={{ 
+            fontSize: "clamp(1rem, 4vw, 1.25rem)", 
+            color: "var(--text-secondary)", 
+            marginBottom: "32px", 
+            lineHeight: "1.6",
+            maxWidth: "600px",
+            margin: "0 auto 32px"
+          }}>
+            {t.home.subtitle}
           </p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", flexDirection: "column" }}>
-            {isLogged ? (
+          
+          {!isLogged && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "300px", margin: "0 auto" }}>
               <Link
-                href="/dashboard"
-                style={{ background: "#2563eb", color: "white", padding: "12px 20px", borderRadius: "12px", textDecoration: "none", fontWeight: 600, textAlign: "center", display: "block" }}
+                href="/login"
+                style={{ 
+                  background: "var(--primary)", 
+                  color: "white", 
+                  padding: "14px 28px", 
+                  borderRadius: "8px", 
+                  textDecoration: "none", 
+                  fontWeight: 600, 
+                  textAlign: "center", 
+                  display: "block",
+                  transition: "background 0.2s ease",
+                  cursor: "pointer"
+                }}
+                onMouseEnter={(e) => e.target.style.background = "var(--primary-dark)"}
+                onMouseLeave={(e) => e.target.style.background = "var(--primary)"}
               >
-                Ir para o painel
+                {t.home.enterLogin}
               </Link>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  style={{ background: "#2563eb", color: "white", padding: "12px 20px", borderRadius: "12px", textDecoration: "none", fontWeight: 600, textAlign: "center", display: "block" }}
-                >
-                  Entrar
-                </Link>
-                <Link
-                  href="/signup"
-                  style={{ background: "#f3f4f6", color: "#111827", padding: "12px 20px", borderRadius: "12px", textDecoration: "none", fontWeight: 600, textAlign: "center", display: "block" }}
-                >
-                  Criar conta
-                </Link>
-              </>
-            )}
-          </div>
+              <Link
+                href="/signup"
+                style={{ 
+                  background: "var(--background-alt)", 
+                  color: "var(--primary)", 
+                  padding: "14px 28px", 
+                  borderRadius: "8px", 
+                  textDecoration: "none", 
+                  fontWeight: 600, 
+                  textAlign: "center", 
+                  display: "block",
+                  border: "2px solid var(--primary)",
+                  transition: "all 0.2s ease",
+                  cursor: "pointer"
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = "var(--primary-light)";
+                  e.target.style.color = "white";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = "var(--background-alt)";
+                  e.target.style.color = "var(--primary)";
+                }}
+              >
+                {t.home.createAccount}
+              </Link>
+            </div>
+          )}
         </section>
 
-        <section style={{ display: "grid", gap: "16px", gridTemplateColumns: "1fr" }}>
-          <div style={{ background: "#ffffff", borderRadius: "16px", padding: "18px", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)" }}>
-            <h2 style={{ fontSize: "clamp(1rem, 4vw, 1.25rem)", marginBottom: "12px" }}>🔍 Procurar oportunidades</h2>
-            <p style={{ color: "#4b5563", fontSize: "0.95rem", lineHeight: "1.5" }}>
-              Veja vagas disponíveis, encontre a posição certa e candidate-se de forma rápida e segura.
-            </p>
-          </div>
-          <div style={{ background: "#ffffff", borderRadius: "16px", padding: "18px", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)" }}>
-            <h2 style={{ fontSize: "clamp(1rem, 4vw, 1.25rem)", marginBottom: "12px" }}>➕ Publicar vaga</h2>
-            <p style={{ color: "#4b5563", fontSize: "0.95rem", lineHeight: "1.5" }}>
-              Se você é recrutador, publique a sua vaga e alcance candidatos qualificados imediatamente.
-            </p>
-          </div>
-          <div style={{ background: "#ffffff", borderRadius: "16px", padding: "18px", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)" }}>
-            <h2 style={{ fontSize: "clamp(1rem, 4vw, 1.25rem)", marginBottom: "12px" }}>👤 Perfil completo</h2>
-            <p style={{ color: "#4b5563", fontSize: "0.95rem", lineHeight: "1.5" }}>
-              Mantenha seu perfil atualizado e agilize o processo de candidatura para as vagas.
-            </p>
-          </div>
+        {/* Features Section */}
+        <section style={{ display: "grid", gap: "20px", gridTemplateColumns: "1fr" }}>
+          <FeatureCard 
+            icon="🔍"
+            title={t.home.searchJobs}
+            description={t.home.searchJobsDesc}
+          />
+          <FeatureCard 
+            icon="➕"
+            title={t.home.postJob}
+            description={t.home.postJobDesc}
+          />
+          <FeatureCard 
+            icon="👤"
+            title={t.home.completeProfile}
+            description={t.home.completeProfileDesc}
+          />
         </section>
       </main>
+
+      {/* Footer */}
+      <footer style={{ 
+        borderTop: "1px solid var(--border)", 
+        background: "white", 
+        padding: "30px 20px", 
+        textAlign: "center", 
+        fontSize: "0.95rem",
+        color: "var(--text-secondary)",
+        marginTop: "50px"
+      }}>
+        <p style={{ marginBottom: "10px" }}>{t.footer.company}</p>
+        <p style={{ marginBottom: "8px" }}>{t.footer.email}</p>
+        <p>{t.footer.contact}</p>
+      </footer>
+    </div>
+  );
+}
+
+function FeatureCard({ icon, title, description }) {
+  return (
+    <div style={{ 
+      background: "white", 
+      borderRadius: "12px", 
+      padding: "24px", 
+      boxShadow: "var(--shadow-md)",
+      border: "1px solid var(--border-light)",
+      transition: "all 0.3s ease",
+      cursor: "pointer"
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.boxShadow = "var(--shadow-lg)";
+      e.currentTarget.style.transform = "translateY(-4px)";
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.boxShadow = "var(--shadow-md)";
+      e.currentTarget.style.transform = "translateY(0)";
+    }}
+    >
+      <h2 style={{ 
+        fontSize: "clamp(1.1rem, 4vw, 1.35rem)", 
+        marginBottom: "12px",
+        color: "var(--foreground)",
+        fontWeight: 600
+      }}>
+        {icon} {title}
+      </h2>
+      <p style={{ 
+        color: "var(--text-secondary)", 
+        fontSize: "0.95rem", 
+        lineHeight: "1.6",
+        margin: 0
+      }}>
+        {description}
+      </p>
     </div>
   );
 }

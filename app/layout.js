@@ -1,4 +1,5 @@
 import './globals.css'
+import { LanguageProvider } from './context/LanguageContext'
 
 export const metadata = {
   title: 'TrampoMoz - Plataforma de Empregos em Moçambique',
@@ -29,7 +30,7 @@ export default function RootLayout({ children }) {
         <meta charSet="utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
-        <meta name="theme-color" content="#0070f3" />
+        <meta name="theme-color" content="#D85F3A" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -37,8 +38,10 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body style={{margin: 0, padding: 0, fontFamily: "Arial, sans-serif", backgroundColor: "#f5f7fb"}}>
-        {children}
+      <body style={{margin: 0, padding: 0, fontFamily: "Arial, sans-serif", backgroundColor: "var(--background)"}}>
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   )
