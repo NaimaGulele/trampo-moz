@@ -16,18 +16,48 @@ export default function LanguageSelector() {
   const currentLang = languages.find(l => l.code === language);
 
   return (
-    <div className="relative">
+    <div style={{ position: 'relative' }}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--border)] hover:bg-[var(--background-alt)] transition-colors text-sm font-medium text-[var(--text-secondary)]"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '10px 14px',
+          borderRadius: '6px',
+          border: '1px solid var(--border)',
+          background: 'white',
+          cursor: 'pointer',
+          fontSize: '0.95rem',
+          fontWeight: '500',
+          color: 'var(--text-secondary)',
+          transition: 'all 0.2s ease',
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.backgroundColor = 'var(--background-alt)';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.backgroundColor = 'white';
+        }}
         aria-label="Change language"
       >
-        <span>{currentLang?.flag}</span>
-        <span className="hidden sm:inline">{currentLang?.label}</span>
+        <span style={{ fontSize: '1.2rem' }}>{currentLang?.flag}</span>
+        <span style={{ display: 'none' }} className="sm-inline">{currentLang?.label}</span>
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-40 bg-white border border-[var(--border)] rounded-lg shadow-lg z-50">
+        <div style={{
+          position: 'absolute',
+          right: 0,
+          marginTop: '8px',
+          width: '160px',
+          background: 'white',
+          border: '1px solid var(--border)',
+          borderRadius: '8px',
+          boxShadow: 'var(--shadow-lg)',
+          zIndex: 50,
+          overflow: 'hidden'
+        }}>
           {languages.map((lang) => (
             <button
               key={lang.code}
@@ -35,13 +65,33 @@ export default function LanguageSelector() {
                 changeLanguage(lang.code);
                 setIsOpen(false);
               }}
-              className={`w-full text-left px-4 py-3 hover:bg-[var(--background-alt)] transition-colors flex items-center gap-2 ${
-                language === lang.code
-                  ? 'bg-[var(--primary-light)] text-white'
-                  : 'text-[var(--foreground)]'
-              }`}
+              style={{
+                width: '100%',
+                textAlign: 'left',
+                padding: '12px 16px',
+                background: language === lang.code ? 'var(--primary)' : 'white',
+                color: language === lang.code ? 'white' : 'var(--foreground)',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                fontSize: '0.95rem',
+                fontWeight: '500',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                if (language !== lang.code) {
+                  e.target.style.backgroundColor = 'var(--background-alt)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (language !== lang.code) {
+                  e.target.style.backgroundColor = 'white';
+                }
+              }}
             >
-              <span>{lang.flag}</span>
+              <span style={{ fontSize: '1.2rem' }}>{lang.flag}</span>
               <span>{lang.label}</span>
             </button>
           ))}

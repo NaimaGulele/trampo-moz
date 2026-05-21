@@ -59,17 +59,15 @@ export default function Signup() {
   };
 
   return (
-    <main style={{ minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "var(--background)" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 20px", borderBottom: "1px solid var(--border)" }}>
-        <Logo />
-        <LanguageSelector />
-      </div>
-
+    <main style={{ minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "var(--background-alt)" }}>
       <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
-        <div style={{ width: "100%", maxWidth: "400px", background: "white", padding: "32px 24px", borderRadius: "12px", boxShadow: "var(--shadow-lg)", border: "1px solid var(--border-light)" }}>
-          <div style={{ marginBottom: "24px", display: "flex", justifyContent: "center" }}>
+        <div style={{ width: "100%", maxWidth: "420px" }}>
+          <div style={{ marginBottom: "32px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <Logo />
+            <LanguageSelector />
           </div>
+
+          <div style={{ background: "white", padding: "40px 28px", borderRadius: "12px", boxShadow: "var(--shadow-lg)", border: "1px solid var(--border)" }}>
 
           <h2 style={{ fontSize: "1.75rem", fontWeight: 700, textAlign: "center", marginBottom: "32px", color: "var(--foreground)" }}>
             {t.signup.title}
@@ -211,6 +209,7 @@ export default function Signup() {
               {t.signup.login}
             </Link>
           </p>
+          </div>
         </div>
       </div>
 
