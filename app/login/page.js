@@ -58,10 +58,6 @@ export default function Login() {
           </div>
 
           <div style={{ background: "white", padding: "40px 28px", borderRadius: "12px", boxShadow: "var(--shadow-lg)", border: "1px solid var(--border)" }}>
-          <div style={{ marginBottom: "24px", display: "flex", justifyContent: "center" }}>
-            <Logo />
-          </div>
-
           <h2 style={{ fontSize: "1.75rem", fontWeight: 700, textAlign: "center", marginBottom: "32px", color: "var(--foreground)" }}>
             {t.login.title}
           </h2>
