@@ -1,7 +1,7 @@
 ﻿"use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Logo from "../components/Logo";
 import { findUser, setAuth } from "../../lib/auth";
 
@@ -11,6 +11,17 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [redirect, setRedirect] = useState("/");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const nextPath = params.get("redirect");
+      if (nextPath) {
+        setRedirect(nextPath);
+      }
+    }
+  }, []);
 
   const handleLogin = () => {
     const normalizedEmail = email.trim().toLowerCase();
@@ -31,7 +42,7 @@ export default function Login() {
     }
 
     setAuth(user.email);
-    router.push("/");
+    router.push(redirect || "/");
   };
 
   return (
@@ -79,7 +90,7 @@ export default function Login() {
 
           {error && error.includes("Usuário inexistente") && (
             <button
-              onClick={() => router.push(`/signup?email=${encodeURIComponent(email)}`)}
+              onClick={() => router.push(`/signup?email=${encodeURIComponent(email)}&redirect=${encodeURIComponent(redirect)}`)}
               className="w-full mt-3 rounded-2xl border border-blue-600 py-3 text-blue-600 transition hover:bg-blue-50 font-semibold"
             >
               Criar conta
@@ -88,7 +99,7 @@ export default function Login() {
 
           <p className="text-center text-sm mt-4 text-gray-600">
             Não tens conta?{' '}
-            <Link href="/signup" className="text-blue-600 hover:underline">
+            <Link href={`/signup?redirect=${encodeURIComponent(redirect)}`} className="text-blue-600 hover:underline">
               Criar conta
             </Link>
           </p>

@@ -11,6 +11,7 @@ export default function ApplyPage() {
   const jobId = params.id;
 
   const [isLogged, setIsLogged] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [contact, setContact] = useState("");
@@ -24,7 +25,8 @@ export default function ApplyPage() {
   useEffect(() => {
     const auth = getAuth();
     if (!auth?.email) {
-      router.push("/login");
+      const redirectPath = `/jobs/${jobId}/apply`;
+      router.replace(`/login?redirect=${encodeURIComponent(redirectPath)}`);
       return;
     }
 
@@ -56,10 +58,19 @@ export default function ApplyPage() {
       setJobLocation(job.location);
       setJobSalary(job.salary);
     }
+
+    setIsLoading(false);
   }, [jobId, router]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const auth = getAuth();
+    if (!auth?.email) {
+      setError("Por favor, faça login antes de candidatar-se.");
+      router.replace("/login");
+      return;
+    }
 
     if (!fullName || !contact || !address) {
       setError("Por favor, complete seu perfil com nome, contacto e morada.");
@@ -85,6 +96,14 @@ export default function ApplyPage() {
     setSubmitted(true);
     setError("");
   };
+
+  if (isLoading) {
+    return (
+      <main style={{ fontFamily: "Arial", padding: "16px", maxWidth: "800px", margin: "0 auto", paddingBottom: "80px" }}>
+        <p style={{ color: "#374151", fontSize: "1rem", textAlign: "center", marginTop: "80px" }}>Verificando autenticação...</p>
+      </main>
+    );
+  }
 
   if (!isLogged) return null;
 
@@ -144,6 +163,9 @@ export default function ApplyPage() {
                   fontSize: "16px"
                 }}
               />
+              <p style={{ marginTop: "8px", color: "#4b5563", fontSize: "0.9rem" }}>
+                Este email será usado na sua candidatura. Use sempre o email real para não esquecer.
+              </p>
             </div>
 
             <div>

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Logo from "../components/Logo";
-import { findUser, saveUser, setAuth } from "../../lib/auth";
+import { findUser, saveUser, saveProfile, setAuth } from "../../lib/auth";
 
 export default function Signup() {
   const router = useRouter();
@@ -12,13 +12,18 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [redirect, setRedirect] = useState("/");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const prefillEmail = params.get("email");
+      const nextPath = params.get("redirect");
       if (prefillEmail) {
         setEmail(prefillEmail.toLowerCase());
+      }
+      if (nextPath) {
+        setRedirect(nextPath);
       }
     }
   }, []);
@@ -37,8 +42,17 @@ export default function Signup() {
     }
 
     saveUser({ name, email: normalizedEmail, password });
+    saveProfile(normalizedEmail, {
+      fullName: name,
+      contact: "",
+      address: "",
+      title: "",
+      summary: "",
+      experience: "",
+      cvFileName: "",
+    });
     setAuth(normalizedEmail);
-    router.push("/");
+    router.push(redirect || "/");
   };
 
   return (
@@ -63,8 +77,9 @@ export default function Signup() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
-            className="w-full mb-3 rounded-2xl border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
+            className="w-full mb-1 rounded-2xl border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
           />
+          <p className="text-xs text-gray-500 mb-3">Use seu email real, ele será usado nas candidaturas e para recuperar seu acesso.</p>
 
           <div className="relative mb-4">
             <input
@@ -94,7 +109,7 @@ export default function Signup() {
 
           <p className="text-center text-sm mt-4 text-gray-600">
             Já tens conta?{' '}
-            <Link href="/login" className="text-blue-600 hover:underline">
+            <Link href={`/login?redirect=${encodeURIComponent(redirect)}`} className="text-blue-600 hover:underline">
               Entrar
             </Link>
           </p>
