@@ -1,13 +1,15 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getAuth, clearAuth } from "../../lib/auth";
+import { LanguageContext } from "../components/LanguageProvider";
 
 export default function Dashboard() {
   const router = useRouter();
   const [isLogged, setIsLogged] = useState(false);
   const [search, setSearch] = useState("");
+  const { t } = useContext(LanguageContext);
 
   useEffect(() => {
     const auth = getAuth();
@@ -39,20 +41,20 @@ export default function Dashboard() {
   if (!isLogged) return null;
 
   return (
-    <main className="min-h-screen bg-gray-50 p-3 pb-32 md:p-4">
+    <main className="min-h-screen bg-slate-50 p-3 pb-32 md:p-4">
 
-      <div className="mb-6 rounded-2xl md:rounded-3xl bg-white p-4 md:p-6 shadow-sm">
-        <h1 className="text-xl md:text-2xl font-bold">👋 Bem-vindo ao Trampo Moz</h1>
-        <p className="mt-2 text-xs md:text-sm text-gray-600 leading-relaxed">Plataforma de empregos para você encontrar vagas, publicar oportunidades e manter seu perfil profissional atualizado.</p>
+      <div className="mb-6 rounded-2xl md:rounded-3xl bg-sky-50 p-4 md:p-6 shadow-sm border border-sky-100">
+        <h1 className="text-xl md:text-2xl font-bold text-slate-900">👋 {t('home.welcome')}</h1>
+        <p className="mt-2 text-xs md:text-sm text-slate-600 leading-relaxed">{t('home.description')}</p>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
         <div className="space-y-4">
           <section className="rounded-2xl md:rounded-3xl bg-white p-4 md:p-6 shadow-sm">
-            <h2 className="text-base md:text-lg font-semibold mb-3 md:mb-4">🔍 Procurar empregos</h2>
+            <h2 className="text-base md:text-lg font-semibold mb-3 md:mb-4">🔍 {t('dashboard.search') ?? 'Procurar empregos'}</h2>
             <input
               type="text"
-              placeholder="Buscar por cargo, por exemplo: Recepcionista"
+              placeholder={t('dashboard.search_placeholder') ?? 'Buscar por cargo, por exemplo: Recepcionista'}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full rounded-2xl border border-gray-300 p-3 mb-4 text-sm md:text-base"
@@ -65,16 +67,16 @@ export default function Dashboard() {
                     <p className="text-xs md:text-sm text-gray-500">{job.location}</p>
                     <p className="text-blue-600 font-bold text-sm md:text-base">{job.salary}</p>
                   </div>
-                  <Link
+                    <Link
                     href={`/jobs/${job.id}/apply`}
-                    className="inline-flex w-full items-center justify-center rounded-2xl bg-green-600 px-4 py-3 text-white transition hover:bg-green-700 text-sm md:text-base font-semibold"
+                    className="inline-flex w-full items-center justify-center rounded-2xl bg-blue-600 px-4 py-3 text-white transition hover:bg-blue-700 text-sm md:text-base font-semibold"
                   >
-                    Candidatar-se
+                    {t('job.apply') ?? 'Candidatar-se'}
                   </Link>
                 </div>
               ))}
               {filteredJobs.length === 0 && (
-                <p className="text-xs md:text-sm text-gray-500">Nenhuma vaga encontrada. Tente outra palavra-chave.</p>
+                <p className="text-xs md:text-sm text-gray-500">{t('dashboard.no_jobs') ?? 'Nenhuma vaga encontrada. Tente outra palavra-chave.'}</p>
               )}
             </div>
           </section>
@@ -83,16 +85,16 @@ export default function Dashboard() {
 
         <aside className="space-y-4 hidden lg:block">
           <div className="rounded-3xl bg-white p-6 shadow-sm">
-            <h2 className="font-semibold mb-3">Navegação rápida</h2>
+            <h2 className="font-semibold mb-3">{t('dashboard.quick_nav')}</h2>
             <div className="space-y-3">
               <Link href="/" className="block rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-gray-700 transition hover:bg-slate-100 text-sm">
-                🏠 Página inicial
+                🏠 {t('nav.home')}
               </Link>
               <Link href="/dashboard" className="block rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-gray-700 transition hover:bg-slate-100 text-sm">
-                🔍 Buscar vagas
+                🔍 {t('nav.search')}
               </Link>
               <Link href="/post" className="block rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-gray-700 transition hover:bg-slate-100 text-sm">
-                ➕ Publicar vaga
+                ➕ {t('footer.publicar_vaga')}
               </Link>
             </div>
           </div>

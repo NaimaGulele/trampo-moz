@@ -1,9 +1,10 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Logo from "../components/Logo";
 import { findUser, saveUser, saveProfile, setAuth } from "../../lib/auth";
+import { LanguageContext } from "../components/LanguageProvider";
 
 export default function Signup() {
   const router = useRouter();
@@ -11,6 +12,7 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { t } = useContext(LanguageContext);
   const [showPassword, setShowPassword] = useState(false);
   const [redirect, setRedirect] = useState("/");
 
@@ -31,13 +33,13 @@ export default function Signup() {
   const handleSignup = () => {
     const normalizedEmail = email.trim().toLowerCase();
     if (!name || !normalizedEmail || !password) {
-      setError("Preencha nome, email e senha para criar conta.");
+      setError(t('signup.fill_error'));
       return;
     }
 
     const existingUser = findUser(normalizedEmail);
     if (existingUser) {
-      setError("Este email já existe. Faça login com sua conta.");
+      setError(t('signup.exists'));
       return;
     }
 
@@ -62,13 +64,13 @@ export default function Signup() {
           <div className="mb-6 flex justify-center">
             <Logo />
           </div>
-          <h2 className="text-2xl font-bold text-center mb-6">Criar conta</h2>
+          <h2 className="text-2xl font-bold text-center mb-6">{t('signup.title')}</h2>
 
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Nome completo"
+            placeholder={t('signup.name_placeholder') ?? 'Nome completo'}
             className="w-full mb-3 rounded-2xl border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
           />
 
@@ -76,17 +78,17 @@ export default function Signup() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
+            placeholder={t('signup.email_placeholder') ?? 'Email'}
             className="w-full mb-1 rounded-2xl border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
           />
-          <p className="text-xs text-gray-500 mb-3">Use seu email real, ele será usado nas candidaturas e para recuperar seu acesso.</p>
+          <p className="text-xs text-gray-500 mb-3">{t('signup.email_notice') ?? 'Use seu email real, ele será usado nas candidaturas e para recuperar seu acesso.'}</p>
 
           <div className="relative mb-4">
             <input
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Senha"
+              placeholder={t('signup.password_placeholder') ?? 'Senha'}
               className="w-full rounded-2xl border border-gray-300 p-3 pr-12 focus:border-blue-500 focus:outline-none"
             />
             <button
@@ -104,22 +106,22 @@ export default function Signup() {
             onClick={handleSignup}
             className="w-full rounded-2xl bg-blue-600 py-3 text-white transition hover:bg-blue-700 font-semibold"
           >
-            Criar conta
+            {t('signup.title')}
           </button>
 
           <p className="text-center text-sm mt-4 text-gray-600">
-            Já tens conta?{' '}
+            {t('signup.have_account')}{' '}
             <Link href={`/login?redirect=${encodeURIComponent(redirect)}`} className="text-blue-600 hover:underline">
-              Entrar
+              {t('login.title')}
             </Link>
           </p>
         </div>
       </div>
 
       <footer className="border-t border-gray-200 bg-white py-6 text-center text-sm text-gray-600">
-        <p className="mb-2">Trampo Moz - Encontre emprego em Moçambique</p>
-        <p>Email: suporte@trampomoz.co.mz</p>
-        <p>Contacto: +258 84 000 0000</p>
+        <p className="mb-2">{t('footer.about')}</p>
+        <p>Email: {t('footer.contact_email')}</p>
+        <p>Contacto: +258 84 000 000 000</p>
       </footer>
     </main>
   );

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
 import { getAuth } from "../../lib/auth";
+import { LanguageContext } from "../components/LanguageProvider";
 
 export default function PostJob() {
   const router = useRouter();
@@ -25,10 +26,12 @@ export default function PostJob() {
     }
   }, [router]);
 
+  const { t } = useContext(LanguageContext);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!title || !location || !salary || !description) {
-      setError("Preencha todos os campos antes de publicar.");
+      setError(t('post.fill_error') ?? 'Preencha todos os campos antes de publicar.');
       return;
     }
 
@@ -64,45 +67,45 @@ export default function PostJob() {
           href="/dashboard"
           style={{ display: "inline-flex", alignItems: "center", color: "#2563eb", marginBottom: "20px", textDecoration: "none", fontSize: "0.95rem" }}
         >
-          ← Voltar
+          ← {t('post.back') ?? 'Voltar'}
         </Link>
-        <h1 style={{ marginBottom: "20px", fontSize: "clamp(1.5rem, 5vw, 2rem)" }}>➕ Publicar vaga</h1>
+        <h1 style={{ marginBottom: "20px", fontSize: "clamp(1.5rem, 5vw, 2rem)" }}>➕ {t('footer.publicar_vaga')}</h1>
 
         <form onSubmit={handleSubmit} style={{ display: "grid", gap: "12px" }}>
           <input
-            placeholder="Título da vaga"
+            placeholder={t('post.title_placeholder') ?? 'Título da vaga'}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             style={{ ...inputStyle, fontSize: "16px" }}
           />
           <input
-            placeholder="Localização"
+            placeholder={t('post.location_placeholder') ?? 'Localização'}
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             style={{ ...inputStyle, fontSize: "16px" }}
           />
           <input
-            placeholder="Salário (MZN)"
+            placeholder={t('post.salary_placeholder') ?? 'Salário (MZN)'}
             value={salary}
             onChange={(e) => setSalary(e.target.value)}
             style={{ ...inputStyle, fontSize: "16px" }}
           />
           <textarea
-            placeholder="Descrição"
+            placeholder={t('post.description_placeholder') ?? 'Descrição'}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             style={{ ...inputStyle, minHeight: "120px", fontSize: "16px" }}
           />
 
           <button style={buttonStyle} type="submit">
-            Publicar
+            {t('post.publish') ?? 'Publicar'}
           </button>
         </form>
 
         {error && <p style={{ color: "#dc2626", marginTop: "14px" }}>{error}</p>}
         {message && (
           <p style={{ color: "#047857", marginTop: "14px" }}>
-            {message} <Link href="/dashboard" style={{ fontWeight: "700" }}>Ver vagas</Link>
+            {message} <Link href="/dashboard" style={{ fontWeight: "700" }}>{t('post.view_jobs') ?? 'Ver vagas'}</Link>
           </p>
         )}
       </div>

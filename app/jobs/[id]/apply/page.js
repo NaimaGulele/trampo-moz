@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
 import { getAuth, getProfile } from "../../../../lib/auth";
+import { LanguageContext } from "../../../components/LanguageProvider";
 
 export default function ApplyPage() {
   const router = useRouter();
@@ -21,6 +22,7 @@ export default function ApplyPage() {
   const [jobSalary, setJobSalary] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const { t } = useContext(LanguageContext);
 
   useEffect(() => {
     const auth = getAuth();
@@ -67,13 +69,13 @@ export default function ApplyPage() {
 
     const auth = getAuth();
     if (!auth?.email) {
-      setError("Por favor, faça login antes de candidatar-se.");
+      setError(t('apply.login_required') ?? "Por favor, faça login antes de candidatar-se.");
       router.replace("/login");
       return;
     }
 
     if (!fullName || !contact || !address) {
-      setError("Por favor, complete seu perfil com nome, contacto e morada.");
+      setError(t('apply.complete_profile') ?? "Por favor, complete seu perfil com nome, contacto e morada.");
       return;
     }
 
@@ -100,7 +102,7 @@ export default function ApplyPage() {
   if (isLoading) {
     return (
       <main style={{ fontFamily: "Arial", padding: "16px", maxWidth: "800px", margin: "0 auto", paddingBottom: "80px" }}>
-        <p style={{ color: "#374151", fontSize: "1rem", textAlign: "center", marginTop: "80px" }}>Verificando autenticação...</p>
+        <p style={{ color: "#374151", fontSize: "1rem", textAlign: "center", marginTop: "80px" }}>{t('apply.checking')}</p>
       </main>
     );
   }
@@ -111,31 +113,31 @@ export default function ApplyPage() {
     <main style={{ fontFamily: "Arial", padding: "16px", maxWidth: "800px", margin: "0 auto", paddingBottom: "80px" }}>
       <Link
         href="/dashboard"
-        style={{ display: "inline-flex", alignItems: "center", color: "#2563eb", marginBottom: "20px", textDecoration: "none", fontSize: "0.95rem" }}
+        style={{ display: "inline-flex", alignItems: "center", color: "#0f4c81", marginBottom: "20px", textDecoration: "none", fontSize: "0.95rem" }}
       >
-        ← Voltar às vagas
+        ← {t('apply.back_to_jobs')}
       </Link>
 
       {!submitted ? (
         <>
-          <h1 style={{ marginBottom: "20px", fontSize: "clamp(1.5rem, 5vw, 2rem)" }}>📝 Candidatura</h1>
+          <h1 style={{ marginBottom: "20px", fontSize: "clamp(1.5rem, 5vw, 2rem)" }}>📝 {t('apply.title') ?? 'Candidatura'}</h1>
 
-          <div style={{ background: "#e3f2fd", padding: "14px", borderRadius: "12px", marginBottom: "20px" }}>
-            <h2 style={{ color: "#1976d2", marginBottom: "10px", fontSize: "1.1rem" }}>{jobTitle}</h2>
-            <p style={{ marginBottom: "5px", fontSize: "0.95rem" }}><strong>Localização:</strong> {jobLocation}</p>
-            <p style={{ fontSize: "0.95rem" }}><strong>Salário:</strong> {jobSalary}</p>
+          <div style={{ background: "#eff6ff", padding: "14px", borderRadius: "12px", marginBottom: "20px", border: "1px solid rgba(15, 118, 255, 0.15)" }}>
+            <h2 style={{ color: "#0f4c81", marginBottom: "10px", fontSize: "1.1rem" }}>{jobTitle}</h2>
+            <p style={{ marginBottom: "5px", fontSize: "0.95rem" }}><strong>{t('apply.location_label')}</strong> {jobLocation}</p>
+            <p style={{ fontSize: "0.95rem" }}><strong>{t('apply.salary_label')}</strong> {jobSalary}</p>
           </div>
 
-          <h3 style={{ marginBottom: "15px", marginTop: "24px", fontSize: "1rem" }}>Suas informações:</h3>
+          <h3 style={{ marginBottom: "15px", marginTop: "24px", fontSize: "1rem" }}>{t('apply.your_info') ?? 'Suas informações:'}</h3>
 
           <form onSubmit={handleSubmit} style={{ display: "grid", gap: "12px" }}>
             <div>
-              <label style={{ display: "block", marginBottom: "6px", fontWeight: "bold", fontSize: "0.95rem" }}>Nome Completo *</label>
+              <label style={{ display: "block", marginBottom: "6px", fontWeight: "bold", fontSize: "0.95rem" }}>{t('apply.full_name') ?? 'Nome Completo *'}</label>
               <input
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                placeholder="Seu nome completo"
+                placeholder={t('apply.full_name')}
                 style={{
                   width: "100%",
                   padding: "12px",
@@ -148,7 +150,7 @@ export default function ApplyPage() {
             </div>
 
             <div>
-              <label style={{ display: "block", marginBottom: "6px", fontWeight: "bold", fontSize: "0.95rem" }}>Email</label>
+              <label style={{ display: "block", marginBottom: "6px", fontWeight: "bold", fontSize: "0.95rem" }}>{t('apply.email') ?? 'Email'}</label>
               <input
                 type="email"
                 value={email}
@@ -164,17 +166,17 @@ export default function ApplyPage() {
                 }}
               />
               <p style={{ marginTop: "8px", color: "#4b5563", fontSize: "0.9rem" }}>
-                Este email será usado na sua candidatura. Use sempre o email real para não esquecer.
+                {t('apply.email_notice') ?? 'Este email será usado na sua candidatura. Use sempre o email real para não esquecer.'}
               </p>
             </div>
 
             <div>
-              <label style={{ display: "block", marginBottom: "6px", fontWeight: "bold", fontSize: "0.95rem" }}>Contacto *</label>
+              <label style={{ display: "block", marginBottom: "6px", fontWeight: "bold", fontSize: "0.95rem" }}>{t('apply.contact') ?? 'Contacto *'}</label>
               <input
                 type="text"
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}
-                placeholder="+258 84 000 0000"
+                placeholder={t('apply.contact')}
                 style={{
                   width: "100%",
                   padding: "12px",
@@ -187,12 +189,12 @@ export default function ApplyPage() {
             </div>
 
             <div>
-              <label style={{ display: "block", marginBottom: "6px", fontWeight: "bold", fontSize: "0.95rem" }}>Morada *</label>
+              <label style={{ display: "block", marginBottom: "6px", fontWeight: "bold", fontSize: "0.95rem" }}>{t('apply.address') ?? 'Morada *'}</label>
               <input
                 type="text"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                placeholder="Rua, Cidade, Bairro"
+                placeholder={t('apply.address')}
                 style={{
                   width: "100%",
                   padding: "12px",
@@ -211,7 +213,7 @@ export default function ApplyPage() {
               style={{
                 marginTop: "12px",
                 padding: "14px",
-                background: "#16a34a",
+                background: "#0f4c81",
                 color: "white",
                 border: "none",
                 borderRadius: "8px",
@@ -220,22 +222,22 @@ export default function ApplyPage() {
                 fontWeight: "bold"
               }}
             >
-              Confirmar Candidatura
+              {t('apply.confirm') ?? 'Confirmar Candidatura'}
             </button>
           </form>
         </>
       ) : (
         <div style={{ textAlign: "center", padding: "24px" }}>
-          <h1 style={{ color: "#16a34a", marginBottom: "16px", fontSize: "clamp(1.3rem, 5vw, 1.8rem)" }}>✅ Candidatura feita com sucesso!</h1>
-          <p style={{ fontSize: "clamp(0.95rem, 4vw, 1.1rem)", marginBottom: "10px", lineHeight: "1.5" }}>Sua candidatura para <strong>{jobTitle}</strong> foi recebida.</p>
-          <p style={{ marginBottom: "20px", color: "#666", fontSize: "0.95rem", lineHeight: "1.5" }}>Em breve, os recrutadores entrarão em contacto através do email e contacto fornecidos.</p>
+          <h1 style={{ color: "#16a34a", marginBottom: "16px", fontSize: "clamp(1.3rem, 5vw, 1.8rem)" }}>{t('apply.success_title') ?? '✅ Candidatura feita com sucesso!'}</h1>
+          <p style={{ fontSize: "clamp(0.95rem, 4vw, 1.1rem)", marginBottom: "10px", lineHeight: "1.5" }}>{t('apply.success_msg')?.replace('{job}', jobTitle) ?? `Sua candidatura para ${jobTitle} foi recebida.`}</p>
+          <p style={{ marginBottom: "20px", color: "#666", fontSize: "0.95rem", lineHeight: "1.5" }}>{t('apply.success_note') ?? 'Em breve, os recrutadores entrarão em contacto através do email e contacto fornecidos.'}</p>
 
           <Link
             href="/dashboard"
             style={{
               display: "inline-block",
               padding: "12px 24px",
-              background: "#0070f3",
+              background: "#0f4c81",
               color: "white",
               borderRadius: "8px",
               textDecoration: "none",
@@ -243,7 +245,7 @@ export default function ApplyPage() {
               fontSize: "0.95rem"
             }}
           >
-            Voltar às vagas
+            {t('apply.back_to_jobs')}
           </Link>
         </div>
       )}

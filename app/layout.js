@@ -1,4 +1,5 @@
 import './globals.css'
+import LanguageProvider from './components/LanguageProvider'
 
 export const metadata = {
   title: 'TrampoMoz - Plataforma de Empregos em Moçambique',
@@ -12,15 +13,7 @@ export const metadata = {
     type: 'website',
     locale: 'pt_MZ',
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-    userScalable: true,
-  },
 }
-
-export const viewport = 'width=device-width, initial-scale=1.0'
 
 export default function RootLayout({ children }) {
   return (
@@ -29,16 +22,19 @@ export default function RootLayout({ children }) {
         <meta charSet="utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
-        <meta name="theme-color" content="#0070f3" />
+        <meta name="theme-color" content="#0b6efd" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="TrampoMoz" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/logo.svg" />
+        <link rel="apple-touch-icon" href="/logo.svg" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body style={{margin: 0, padding: 0, fontFamily: "Arial, sans-serif", backgroundColor: "#f5f7fb"}}>
-        {children}
+      <body className="app-shell">
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   )

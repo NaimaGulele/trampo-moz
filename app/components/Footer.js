@@ -1,94 +1,47 @@
 import InteractiveLink from "./InteractiveLink";
+import { useContext } from "react";
+import { LanguageContext } from "./LanguageProvider";
 
 export default function Footer() {
+  const { t } = useContext(LanguageContext);
+
   return (
-    <footer
-      style={{
-        background: "#222222",
-        color: "#fff",
-        padding: "40px 20px",
-        marginTop: "80px",
-        borderTop: "1px solid #333"
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "1000px",
-          margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "40px",
-          marginBottom: "40px"
-        }}
-      >
+    <footer className="site-footer" role="contentinfo">
+      <div className="container">
         <div>
-          <h3 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "15px" }}>
-            Sobre
-          </h3>
-          <p style={{ color: "#ccc", fontSize: "14px", lineHeight: "1.6", margin: "0" }}>
-            TrampoMoz conecta profissionais com empresas em Moçambique, oferecendo oportunidades de crescimento profissional em Maputo, Matola e todo o país.
-          </p>
+          <h3>{t('footer.about_title')}</h3>
+          <p>{t('footer.about')}</p>
         </div>
 
         <div>
-          <h3 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "15px" }}>
-            Links Rápidos
-          </h3>
-          <ul style={{ listStyle: "none", padding: "0", margin: "0" }}>
+          <h3>{t('footer.links_title')}</h3>
+          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
             <li style={{ marginBottom: "10px" }}>
-              <InteractiveLink href="/jobs" style={{ color: "#0070f3", textDecoration: "none" }}>
-                Ver Empregos
-              </InteractiveLink>
+              <InteractiveLink href="/jobs">{t('footer.ver_empregos')}</InteractiveLink>
             </li>
             <li style={{ marginBottom: "10px" }}>
-              <InteractiveLink href="/post" style={{ color: "#0070f3", textDecoration: "none" }}>
-                Publicar Vaga
-              </InteractiveLink>
+              <InteractiveLink href="/post">{t('footer.publicar_vaga')}</InteractiveLink>
             </li>
             <li style={{ marginBottom: "10px" }}>
-              <InteractiveLink href="/signin" style={{ color: "#0070f3", textDecoration: "none" }}>
-                Criar Conta
-              </InteractiveLink>
+              <InteractiveLink href="/signup">{t('footer.criar_conta')}</InteractiveLink>
             </li>
             <li style={{ marginBottom: "10px" }}>
-              <InteractiveLink href="/login" style={{ color: "#0070f3", textDecoration: "none" }}>
-                Entrar
-              </InteractiveLink>
+              <InteractiveLink href="/login">{t('footer.entrar')}</InteractiveLink>
             </li>
           </ul>
         </div>
 
         <div>
-          <h3 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "15px" }}>
-            Contato
-          </h3>
-          <p style={{ color: "#ccc", fontSize: "14px", margin: "0" }}>
-            📧 contato@trampomoz.com
-          </p>
-          <p style={{ color: "#ccc", fontSize: "14px", margin: "10px 0 0 0" }}>
-            📱 +258 84 123 456
-          </p>
-          <p style={{ color: "#ccc", fontSize: "14px", margin: "10px 0 0 0" }}>
-            📍 Maputo, Moçambique
-          </p>
+          <h3>{t('footer.contact_title')}</h3>
+          <p>📧 {t('footer.contact_email')}</p>
+          <p style={{ marginTop: "8px" }}>📱 +258 84 123 456</p>
+          <p style={{ marginTop: "8px" }}>📍 Maputo, Moçambique</p>
         </div>
       </div>
 
-      <div
-        style={{
-          borderTop: "1px solid #333",
-          paddingTop: "20px",
-          textAlign: "center",
-          color: "#999",
-          fontSize: "14px"
-        }}
-      >
-        <p style={{ margin: "0" }}>
-          © 2024 TrampoMoz. Todos os direitos reservados.
-        </p>
-        <p style={{ margin: "8px 0 0 0", fontSize: "12px" }}>
-          Plataforma de empregos para Moçambique - Conectando profissionais e empresas
-        </p>
+      <div className="bottom">
+        <p style={{ margin: 0 }}>{t('footer.copy')}</p>
+        <p style={{ margin: "8px 0 0 0", fontSize: "12px" }}>{t('footer.about')}</p>
       </div>
     </footer>
   );

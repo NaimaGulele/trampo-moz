@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { getAuth } from "../../../lib/auth";
+import { LanguageContext } from "../../components/LanguageProvider";
 
 export default function JobDetails({ params }) {
   const [isLogged, setIsLogged] = useState(false);
+  const { t } = useContext(LanguageContext);
 
   useEffect(() => {
     const auth = getAuth();
@@ -14,13 +16,13 @@ export default function JobDetails({ params }) {
 
   const redirectPath = `/jobs/${params.id}/apply`;
   const applyLink = isLogged ? redirectPath : `/login?redirect=${encodeURIComponent(redirectPath)}`;
-  const buttonText = isLogged ? "Candidatar-se" : "Faça login para candidatar-se";
+  const buttonText = isLogged ? (t('job.apply') ?? 'Candidatar-se') : (t('job.login_to_apply') ?? 'Faça login para candidatar-se');
 
   return (
     <div style={{ padding: "40px", fontFamily: "Arial, sans-serif", backgroundColor: "#eef2f7", minHeight: "100vh" }}>
-      <h1 style={{ color: "#0d6efd", marginBottom: "20px" }}>Detalhes da vaga</h1>
+      <h1 style={{ color: "#0d6efd", marginBottom: "20px" }}>{t('job.details') ?? 'Detalhes da vaga'}</h1>
 
-      <p style={{ fontSize: "1.2rem", marginBottom: "10px" }}>ID da vaga: {params.id}</p>
+      <p style={{ fontSize: "1.2rem", marginBottom: "10px" }}>{t('job.id_label') ?? 'ID da vaga'}: {params.id}</p>
 
       <Link href="/dashboard" style={{
         display: "inline-block",
@@ -31,7 +33,7 @@ export default function JobDetails({ params }) {
         borderRadius: "8px",
         textDecoration: "none"
       }}>
-        Voltar ao painel
+        {t('job.back_to_dashboard') ?? 'Voltar ao painel'}
       </Link>
 
       <Link href={applyLink} style={{

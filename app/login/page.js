@@ -1,15 +1,17 @@
 ﻿"use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Logo from "../components/Logo";
 import { findUser, setAuth } from "../../lib/auth";
+import { LanguageContext } from "../components/LanguageProvider";
 
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { t } = useContext(LanguageContext);
   const [showPassword, setShowPassword] = useState(false);
   const [redirect, setRedirect] = useState("/");
 
@@ -26,18 +28,18 @@ export default function Login() {
   const handleLogin = () => {
     const normalizedEmail = email.trim().toLowerCase();
     if (!normalizedEmail || !password) {
-      setError("Preencha email e senha para entrar.");
+      setError(t('login.fill_error'));
       return;
     }
 
     const user = findUser(normalizedEmail);
     if (!user) {
-      setError("Usuário inexistente. Crie uma conta para continuar.");
+      setError(t('login.no_user'));
       return;
     }
 
     if (user.password !== password) {
-      setError("Senha incorreta. Verifique seus dados.");
+      setError(t('login.bad_password'));
       return;
     }
 
@@ -52,13 +54,13 @@ export default function Login() {
           <div className="mb-6 flex justify-center">
             <Logo />
           </div>
-          <h2 className="text-2xl font-bold text-center mb-6">Entrar</h2>
+          <h2 className="text-2xl font-bold text-center mb-6">{t('login.title')}</h2>
 
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
+            placeholder={t('signup.email_placeholder') ?? 'Email'}
             className="w-full mb-3 rounded-2xl border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
           />
 
@@ -67,7 +69,7 @@ export default function Login() {
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Senha"
+              placeholder={t('login.password_placeholder') ?? 'Senha'}
               className="w-full rounded-2xl border border-gray-300 p-3 pr-12 focus:border-blue-500 focus:outline-none"
             />
             <button
@@ -85,31 +87,31 @@ export default function Login() {
             onClick={handleLogin}
             className="w-full rounded-2xl bg-blue-600 py-3 text-white transition hover:bg-blue-700 font-semibold"
           >
-            Entrar
+            {t('login.title')}
           </button>
 
-          {error && error.includes("Usuário inexistente") && (
+          {error && error.includes(t('login.no_user')) && (
             <button
               onClick={() => router.push(`/signup?email=${encodeURIComponent(email)}&redirect=${encodeURIComponent(redirect)}`)}
               className="w-full mt-3 rounded-2xl border border-blue-600 py-3 text-blue-600 transition hover:bg-blue-50 font-semibold"
             >
-              Criar conta
+              {t('signup.title')}
             </button>
           )}
 
           <p className="text-center text-sm mt-4 text-gray-600">
-            Não tens conta?{' '}
+            {t('login.no_account')}{' '}
             <Link href={`/signup?redirect=${encodeURIComponent(redirect)}`} className="text-blue-600 hover:underline">
-              Criar conta
+              {t('signup.title')}
             </Link>
           </p>
         </div>
       </div>
 
       <footer className="border-t border-gray-200 bg-white py-6 text-center text-sm text-gray-600">
-        <p className="mb-2">Trampo Moz - Encontre emprego em Moçambique</p>
-        <p>Email: suporte@trampomoz.co.mz</p>
-        <p>Contacto: +258 84 000 0000</p>
+        <p className="mb-2">{t('footer.about')}</p>
+        <p>Email: {t('footer.contact_email')}</p>
+        <p>Contacto: +258 84 000 000 000</p>
       </footer>
     </main>
   );
