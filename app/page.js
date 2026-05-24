@@ -16,28 +16,32 @@ export default function Home() {
   }, []);
 
   return (
-    <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" }}>
+    <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif", background: "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)" }}>
       <Navbar />
 
-      <main style={{ padding: "40px 20px", maxWidth: "1000px", margin: "0 auto" }}>
+      <main style={{ padding: "60px 20px", maxWidth: "1100px", margin: "0 auto" }}>
         {/* Hero Section */}
-        <section style={{ marginBottom: "50px", textAlign: "center" }}>
+        <section style={{ marginBottom: "70px", textAlign: "center" }}>
           <h1 style={{ 
-            fontSize: "clamp(2rem, 6vw, 3rem)", 
-            lineHeight: "1.2", 
-            marginBottom: "20px",
-            color: "#1f2937",
-            fontWeight: 700
+            fontSize: "clamp(2.5rem, 7vw, 3.5rem)", 
+            lineHeight: "1.1", 
+            marginBottom: "24px",
+            background: "linear-gradient(135deg, #1d4ed8 0%, #0891b2 100%)",
+            backgroundClip: "text",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            fontWeight: 800
           }}>
             {t("welcomeTitle", language)}
           </h1>
           <p style={{ 
-            fontSize: "clamp(1rem, 4vw, 1.2rem)", 
-            color: "#6b7280", 
-            marginBottom: "32px", 
-            lineHeight: "1.7",
-            maxWidth: "600px",
-            margin: "0 auto 32px"
+            fontSize: "clamp(1.1rem, 4vw, 1.3rem)", 
+            color: "#475569", 
+            marginBottom: "40px", 
+            lineHeight: "1.8",
+            maxWidth: "700px",
+            margin: "0 auto 40px",
+            fontWeight: 500
           }}>
             {t("welcomeDesc", language)}
           </p>
@@ -89,75 +93,84 @@ export default function Home() {
         <section style={{ display: "grid", gap: "24px", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
           <div style={{ 
             background: "#ffffff", 
-            borderRadius: "16px", 
-            padding: "28px", 
-            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.08)",
-            border: "1px solid #e5e7eb",
-            transition: "transform 0.2s, box-shadow 0.2s"
+            borderRadius: "12px", 
+            padding: "32px", 
+            boxShadow: "0 4px 12px rgba(15, 23, 42, 0.1)",
+            border: "1px solid #dbeafe",
+            transition: "all 0.3s ease",
+            cursor: "pointer"
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-4px)";
-            e.currentTarget.style.boxShadow = "0 8px 16px rgba(0, 0, 0, 0.12)";
+            e.currentTarget.style.transform = "translateY(-8px)";
+            e.currentTarget.style.boxShadow = "0 12px 24px rgba(37, 99, 235, 0.2)";
+            e.currentTarget.style.borderColor = "#2563eb";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 1px 3px rgba(0, 0, 0, 0.08)";
+            e.currentTarget.style.boxShadow = "0 4px 12px rgba(15, 23, 42, 0.1)";
+            e.currentTarget.style.borderColor = "#dbeafe";
           }}
           >
-            <h2 style={{ fontSize: "1.25rem", marginBottom: "12px", color: "#1f2937", fontWeight: 600 }}>
+            <h2 style={{ fontSize: "1.5rem", marginBottom: "16px", color: "#1e293b", fontWeight: 700 }}>
               🔍 {t("searchOpportunities", language)}
             </h2>
-            <p style={{ color: "#6b7280", fontSize: "0.95rem", lineHeight: "1.6" }}>
+            <p style={{ color: "#64748b", fontSize: "1rem", lineHeight: "1.7" }}>
               {t("searchDesc", language)}
             </p>
           </div>
           
           <div style={{ 
             background: "#ffffff", 
-            borderRadius: "16px", 
-            padding: "28px", 
-            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.08)",
-            border: "1px solid #e5e7eb",
-            transition: "transform 0.2s, box-shadow 0.2s"
+            borderRadius: "12px", 
+            padding: "32px", 
+            boxShadow: "0 4px 12px rgba(15, 23, 42, 0.1)",
+            border: "1px solid #dbeafe",
+            transition: "all 0.3s ease",
+            cursor: "pointer"
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-4px)";
-            e.currentTarget.style.boxShadow = "0 8px 16px rgba(0, 0, 0, 0.12)";
+            e.currentTarget.style.transform = "translateY(-8px)";
+            e.currentTarget.style.boxShadow = "0 12px 24px rgba(6, 182, 212, 0.2)";
+            e.currentTarget.style.borderColor = "#06b6d4";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 1px 3px rgba(0, 0, 0, 0.08)";
+            e.currentTarget.style.boxShadow = "0 4px 12px rgba(15, 23, 42, 0.1)";
+            e.currentTarget.style.borderColor = "#dbeafe";
           }}
           >
-            <h2 style={{ fontSize: "1.25rem", marginBottom: "12px", color: "#1f2937", fontWeight: 600 }}>
+            <h2 style={{ fontSize: "1.5rem", marginBottom: "16px", color: "#1e293b", fontWeight: 700 }}>
               ➕ {t("publishJob", language)}
             </h2>
-            <p style={{ color: "#6b7280", fontSize: "0.95rem", lineHeight: "1.6" }}>
+            <p style={{ color: "#64748b", fontSize: "1rem", lineHeight: "1.7" }}>
               {t("publishDesc", language)}
             </p>
           </div>
           
           <div style={{ 
             background: "#ffffff", 
-            borderRadius: "16px", 
-            padding: "28px", 
-            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.08)",
-            border: "1px solid #e5e7eb",
-            transition: "transform 0.2s, box-shadow 0.2s"
+            borderRadius: "12px", 
+            padding: "32px", 
+            boxShadow: "0 4px 12px rgba(15, 23, 42, 0.1)",
+            border: "1px solid #dbeafe",
+            transition: "all 0.3s ease",
+            cursor: "pointer"
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-4px)";
-            e.currentTarget.style.boxShadow = "0 8px 16px rgba(0, 0, 0, 0.12)";
+            e.currentTarget.style.transform = "translateY(-8px)";
+            e.currentTarget.style.boxShadow = "0 12px 24px rgba(16, 185, 129, 0.2)";
+            e.currentTarget.style.borderColor = "#10b981";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 1px 3px rgba(0, 0, 0, 0.08)";
+            e.currentTarget.style.boxShadow = "0 4px 12px rgba(15, 23, 42, 0.1)";
+            e.currentTarget.style.borderColor = "#dbeafe";
           }}
           >
-            <h2 style={{ fontSize: "1.25rem", marginBottom: "12px", color: "#1f2937", fontWeight: 600 }}>
+            <h2 style={{ fontSize: "1.5rem", marginBottom: "16px", color: "#1e293b", fontWeight: 700 }}>
               👤 {t("completeProfile", language)}
             </h2>
-            <p style={{ color: "#6b7280", fontSize: "0.95rem", lineHeight: "1.6" }}>
+            <p style={{ color: "#64748b", fontSize: "1rem", lineHeight: "1.7" }}>
               {t("profileDesc", language)}
             </p>
           </div>

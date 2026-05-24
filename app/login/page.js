@@ -49,9 +49,9 @@ export default function Login() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col bg-gray-50">
+    <main className="min-h-screen flex flex-col" style={{ background: "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)" }}>
       <div className="flex-1 flex items-center justify-center p-6">
-        <div className="w-full max-w-sm bg-white p-6 rounded-3xl shadow-lg">
+        <div className="w-full max-w-sm bg-white p-8 rounded-2xl" style={{ boxShadow: "0 20px 40px rgba(15, 23, 42, 0.15)" }}>
           <div className="mb-6 flex justify-center">
             <Logo />
           </div>
@@ -86,7 +86,16 @@ export default function Login() {
 
           <button
             onClick={handleLogin}
-            className="w-full rounded-2xl bg-blue-600 py-3 text-white transition hover:bg-blue-700 font-semibold"
+            className="w-full rounded-xl py-3 text-white transition font-semibold text-lg"
+            style={{ background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)", boxShadow: "0 4px 12px rgba(37, 99, 235, 0.3)" }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = "0 8px 20px rgba(37, 99, 235, 0.4)";
+              e.currentTarget.style.transform = "translateY(-2px)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = "0 4px 12px rgba(37, 99, 235, 0.3)";
+              e.currentTarget.style.transform = "translateY(0)";
+            }}
           >
             {t("loginButton", language)}
           </button>
@@ -94,7 +103,14 @@ export default function Login() {
           {error && error.includes(t("userNotFound", language)) && (
             <button
               onClick={() => router.push(`/signup?email=${encodeURIComponent(email)}&redirect=${encodeURIComponent(redirect)}`)}
-              className="w-full mt-3 rounded-2xl border border-blue-600 py-3 text-blue-600 transition hover:bg-blue-50 font-semibold"
+              className="w-full mt-3 rounded-xl py-3 font-semibold text-lg transition"
+              style={{ border: "2px solid #2563eb", color: "#2563eb", background: "#dbeafe" }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#bfdbfe";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "#dbeafe";
+              }}
             >
               {t("signup", language)}
             </button>
