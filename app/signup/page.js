@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Logo from "../components/Logo";
 import { findUser, saveUser, saveProfile, setAuth } from "../../lib/auth";
+import { getLanguage, t } from "../../lib/i18n";
 
 export default function Signup() {
   const router = useRouter();
@@ -13,8 +14,10 @@ export default function Signup() {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [redirect, setRedirect] = useState("/");
+  const [language, setLanguage] = useState("pt");
 
   useEffect(() => {
+    setLanguage(getLanguage());
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const prefillEmail = params.get("email");
@@ -31,13 +34,13 @@ export default function Signup() {
   const handleSignup = () => {
     const normalizedEmail = email.trim().toLowerCase();
     if (!name || !normalizedEmail || !password) {
-      setError("Preencha nome, email e senha para criar conta.");
+      setError(t("fillAllFields", language));
       return;
     }
 
     const existingUser = findUser(normalizedEmail);
     if (existingUser) {
-      setError("Este email já existe. Faça login com sua conta.");
+      setError(t("emailExists", language));
       return;
     }
 
@@ -51,7 +54,7 @@ export default function Signup() {
       experience: "",
       cvFileName: "",
     });
-    setAuth(normalizedEmail);
+    setAuth(normalizedEmail, name);
     router.push(redirect || "/");
   };
 
@@ -62,13 +65,13 @@ export default function Signup() {
           <div className="mb-6 flex justify-center">
             <Logo />
           </div>
-          <h2 className="text-2xl font-bold text-center mb-6">Criar conta</h2>
+          <h2 className="text-2xl font-bold text-center mb-6">{t("signupTitle", language)}</h2>
 
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Nome completo"
+            placeholder={t("fullName", language)}
             className="w-full mb-3 rounded-2xl border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
           />
 
@@ -76,17 +79,17 @@ export default function Signup() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
+            placeholder={t("email", language)}
             className="w-full mb-1 rounded-2xl border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
           />
-          <p className="text-xs text-gray-500 mb-3">Use seu email real, ele será usado nas candidaturas e para recuperar seu acesso.</p>
+          <p className="text-xs text-gray-500 mb-3">{language === "pt" ? "Use seu email real, ele será usado nas candidaturas e para recuperar seu acesso." : language === "en" ? "Use your real email, it will be used in applications and to recover your access." : "Mamuyisela email ya wena ya kuphela, i-mameli ku mameyano na ku kubuya ku wena."}</p>
 
           <div className="relative mb-4">
             <input
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Senha"
+              placeholder={t("password", language)}
               className="w-full rounded-2xl border border-gray-300 p-3 pr-12 focus:border-blue-500 focus:outline-none"
             />
             <button
@@ -104,13 +107,13 @@ export default function Signup() {
             onClick={handleSignup}
             className="w-full rounded-2xl bg-blue-600 py-3 text-white transition hover:bg-blue-700 font-semibold"
           >
-            Criar conta
+            {t("signupButton", language)}
           </button>
 
           <p className="text-center text-sm mt-4 text-gray-600">
-            Já tens conta?{' '}
+            {t("hasAccount", language)}{' '}
             <Link href={`/login?redirect=${encodeURIComponent(redirect)}`} className="text-blue-600 hover:underline">
-              Entrar
+              {t("enter", language)}
             </Link>
           </p>
         </div>

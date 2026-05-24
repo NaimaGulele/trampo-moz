@@ -1,9 +1,10 @@
-﻿"use client";
+"use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Logo from "../components/Logo";
 import { findUser, setAuth } from "../../lib/auth";
+import { getLanguage, t } from "../../lib/i18n";
 
 export default function Login() {
   const router = useRouter();
@@ -12,8 +13,10 @@ export default function Login() {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [redirect, setRedirect] = useState("/");
+  const [language, setLanguage] = useState("pt");
 
   useEffect(() => {
+    setLanguage(getLanguage());
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const nextPath = params.get("redirect");
@@ -26,22 +29,22 @@ export default function Login() {
   const handleLogin = () => {
     const normalizedEmail = email.trim().toLowerCase();
     if (!normalizedEmail || !password) {
-      setError("Preencha email e senha para entrar.");
+      setError(t("fillFields", language));
       return;
     }
 
     const user = findUser(normalizedEmail);
     if (!user) {
-      setError("Usuário inexistente. Crie uma conta para continuar.");
+      setError(t("userNotFound", language));
       return;
     }
 
     if (user.password !== password) {
-      setError("Senha incorreta. Verifique seus dados.");
+      setError(t("wrongPassword", language));
       return;
     }
 
-    setAuth(user.email);
+    setAuth(user.email, user.name);
     router.push(redirect || "/");
   };
 
@@ -52,13 +55,13 @@ export default function Login() {
           <div className="mb-6 flex justify-center">
             <Logo />
           </div>
-          <h2 className="text-2xl font-bold text-center mb-6">Entrar</h2>
+          <h2 className="text-2xl font-bold text-center mb-6">{t("loginTitle", language)}</h2>
 
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
+            placeholder={t("email", language)}
             className="w-full mb-3 rounded-2xl border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
           />
 
@@ -67,7 +70,7 @@ export default function Login() {
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Senha"
+              placeholder={t("password", language)}
               className="w-full rounded-2xl border border-gray-300 p-3 pr-12 focus:border-blue-500 focus:outline-none"
             />
             <button
@@ -85,22 +88,22 @@ export default function Login() {
             onClick={handleLogin}
             className="w-full rounded-2xl bg-blue-600 py-3 text-white transition hover:bg-blue-700 font-semibold"
           >
-            Entrar
+            {t("loginButton", language)}
           </button>
 
-          {error && error.includes("Usuário inexistente") && (
+          {error && error.includes(t("userNotFound", language)) && (
             <button
               onClick={() => router.push(`/signup?email=${encodeURIComponent(email)}&redirect=${encodeURIComponent(redirect)}`)}
               className="w-full mt-3 rounded-2xl border border-blue-600 py-3 text-blue-600 transition hover:bg-blue-50 font-semibold"
             >
-              Criar conta
+              {t("signup", language)}
             </button>
           )}
 
           <p className="text-center text-sm mt-4 text-gray-600">
-            Não tens conta?{' '}
+            {t("noAccount", language)}{' '}
             <Link href={`/signup?redirect=${encodeURIComponent(redirect)}`} className="text-blue-600 hover:underline">
-              Criar conta
+              {t("signup", language)}
             </Link>
           </p>
         </div>

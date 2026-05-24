@@ -3,10 +3,13 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { clearAuth, getAuth, getProfile, saveProfile } from "../../lib/auth";
+import { getLanguage, t } from "../../lib/i18n";
 
 export default function ProfilePage() {
   const router = useRouter();
   const [isLogged, setIsLogged] = useState(false);
+  const [language, setLanguage] = useState("pt");
+  const [userName, setUserName] = useState("");
   const [fullName, setFullName] = useState("");
   const [contact, setContact] = useState("");
   const [address, setAddress] = useState("");
@@ -20,10 +23,12 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const auth = getAuth();
+    setLanguage(getLanguage());
     if (!auth?.email) {
       router.push("/login");
     } else {
       setIsLogged(true);
+      setUserName(auth.name || "");
       const storedProfile = getProfile(auth.email);
       if (storedProfile) {
         setFullName(storedProfile.fullName || "");
@@ -82,8 +87,14 @@ export default function ProfilePage() {
   return (
     <main className="min-h-screen bg-gray-50 p-3 pb-32 md:p-4">
       <div className="mb-6 rounded-2xl md:rounded-3xl bg-white p-4 md:p-6 shadow-sm">
-        <h1 className="text-xl md:text-2xl font-bold">👤 Meu Perfil</h1>
-        <p className="mt-2 text-xs md:text-sm text-gray-600">Atualize seus dados profissionais e envie seu CV para recrutadores.</p>
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-xl md:text-2xl font-bold">
+              {t("hello", language)} {userName}! 👤
+            </h1>
+            <p className="mt-2 text-xs md:text-sm text-gray-600">{t("updateProfile", language)}</p>
+          </div>
+        </div>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
