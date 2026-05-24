@@ -5,10 +5,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
 import { getAuth } from "../../lib/auth";
+import { getLanguage, t } from "../../lib/i18n";
 
 export default function PostJob() {
   const router = useRouter();
   const [isLogged, setIsLogged] = useState(false);
+  const [language, setLanguage] = useState("pt");
   const [title, setTitle] = useState("");
   const [location, setLocation] = useState("");
   const [salary, setSalary] = useState("");
@@ -23,6 +25,7 @@ export default function PostJob() {
     } else {
       setIsLogged(true);
     }
+    setLanguage(getLanguage());
   }, [router]);
 
   const handleSubmit = (event) => {
@@ -56,55 +59,71 @@ export default function PostJob() {
   if (!isLogged) return null;
 
   return (
-    <div style={{ fontFamily: "Arial" }}>
+    <div style={{ background: "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)", minHeight: "100vh" }}>
       <Navbar />
 
-      <div style={{ padding: "16px", maxWidth: "720px", margin: "0 auto", paddingBottom: "80px" }}>
+      <div style={{ padding: "32px 16px", maxWidth: "720px", margin: "0 auto", paddingBottom: "40px" }}>
         <Link
           href="/dashboard"
-          style={{ display: "inline-flex", alignItems: "center", color: "#2563eb", marginBottom: "20px", textDecoration: "none", fontSize: "0.95rem" }}
+          style={{ display: "inline-flex", alignItems: "center", color: "#2563eb", marginBottom: "24px", textDecoration: "none", fontSize: "14px", fontWeight: "600", transition: "color 0.2s" }}
+          onMouseEnter={(e) => e.currentTarget.style.color = "#1d4ed8"}
+          onMouseLeave={(e) => e.currentTarget.style.color = "#2563eb"}
         >
           ← Voltar
         </Link>
-        <h1 style={{ marginBottom: "20px", fontSize: "clamp(1.5rem, 5vw, 2rem)" }}>➕ Publicar vaga</h1>
+        <h1 style={{ marginBottom: "32px", fontSize: "32px", fontWeight: "700", color: "#1e293b" }}>➕ Publicar vaga</h1>
 
-        <form onSubmit={handleSubmit} style={{ display: "grid", gap: "12px" }}>
-          <input
-            placeholder="Título da vaga"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            style={{ ...inputStyle, fontSize: "16px" }}
-          />
-          <input
-            placeholder="Localização"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            style={{ ...inputStyle, fontSize: "16px" }}
-          />
-          <input
-            placeholder="Salário (MZN)"
-            value={salary}
-            onChange={(e) => setSalary(e.target.value)}
-            style={{ ...inputStyle, fontSize: "16px" }}
-          />
-          <textarea
-            placeholder="Descrição"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            style={{ ...inputStyle, minHeight: "120px", fontSize: "16px" }}
-          />
+        <div style={{ background: "white", borderRadius: "16px", padding: "32px", boxShadow: "0 4px 12px rgba(15, 23, 42, 0.1)", border: "1px solid #dbeafe" }}>
+          <form onSubmit={handleSubmit} style={{ display: "grid", gap: "16px" }}>
+            <div>
+              <label style={{ display: "block", marginBottom: "8px", fontSize: "14px", fontWeight: "600", color: "#1e293b" }}>Título da vaga</label>
+              <input
+                placeholder="Ex: Desenvolvedor Full Stack"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                style={{ ...inputStyle }}
+              />
+            </div>
+            <div>
+              <label style={{ display: "block", marginBottom: "8px", fontSize: "14px", fontWeight: "600", color: "#1e293b" }}>Localização</label>
+              <input
+                placeholder="Ex: Maputo, Beira, Matola"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                style={{ ...inputStyle }}
+              />
+            </div>
+            <div>
+              <label style={{ display: "block", marginBottom: "8px", fontSize: "14px", fontWeight: "600", color: "#1e293b" }}>Salário (MZN)</label>
+              <input
+                placeholder="Ex: 15.000"
+                value={salary}
+                onChange={(e) => setSalary(e.target.value)}
+                style={{ ...inputStyle }}
+              />
+            </div>
+            <div>
+              <label style={{ display: "block", marginBottom: "8px", fontSize: "14px", fontWeight: "600", color: "#1e293b" }}>Descrição</label>
+              <textarea
+                placeholder="Descreva os detalhes da vaga..."
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                style={{ ...inputStyle, minHeight: "140px" }}
+              />
+            </div>
 
-          <button style={buttonStyle} type="submit">
-            Publicar
-          </button>
-        </form>
+            <button style={buttonStyle} type="submit">
+              Publicar vaga
+            </button>
+          </form>
 
-        {error && <p style={{ color: "#dc2626", marginTop: "14px" }}>{error}</p>}
-        {message && (
-          <p style={{ color: "#047857", marginTop: "14px" }}>
-            {message} <Link href="/dashboard" style={{ fontWeight: "700" }}>Ver vagas</Link>
-          </p>
-        )}
+          {error && <p style={{ color: "#ef4444", marginTop: "16px", fontSize: "14px", fontWeight: "500" }}>❌ {error}</p>}
+          {message && (
+            <p style={{ color: "#10b981", marginTop: "16px", fontSize: "14px", fontWeight: "500" }}>
+              ✓ {message} <Link href="/dashboard" style={{ fontWeight: "700", color: "#2563eb" }}>Ver vagas</Link>
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -113,21 +132,25 @@ export default function PostJob() {
 const inputStyle = {
   display: "block",
   width: "100%",
-  marginBottom: "0",
   padding: "12px",
-  borderRadius: "8px",
-  border: "1px solid #ddd",
-  boxSizing: "border-box"
+  borderRadius: "10px",
+  border: "1px solid #cbd5e1",
+  boxSizing: "border-box",
+  fontSize: "14px",
+  fontFamily: "inherit",
+  transition: "all 0.2s"
 };
 
 const buttonStyle = {
-  marginTop: "12px",
+  marginTop: "8px",
   padding: "14px",
-  background: "#0070f3",
+  background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)",
   color: "white",
   border: "none",
-  borderRadius: "8px",
+  borderRadius: "10px",
   cursor: "pointer",
   fontWeight: 600,
-  fontSize: "16px"
+  fontSize: "16px",
+  transition: "all 0.2s",
+  boxShadow: "0 4px 12px rgba(37, 99, 235, 0.3)"
 };

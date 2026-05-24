@@ -85,113 +85,141 @@ export default function ProfilePage() {
   if (!isLogged) return null;
 
   return (
-    <main className="min-h-screen bg-gray-50 p-3 pb-32 md:p-4">
-      <div className="mb-6 rounded-2xl md:rounded-3xl bg-white p-4 md:p-6 shadow-sm">
-        <div className="flex items-start justify-between">
+    <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)", padding: "20px", paddingBottom: "120px" }}>
+      <div style={{ marginBottom: "30px", borderRadius: "16px", background: "white", padding: "24px", boxShadow: "0 4px 12px rgba(15, 23, 42, 0.1)", border: "1px solid #dbeafe" }}>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
           <div>
-            <h1 className="text-xl md:text-2xl font-bold">
+            <h1 style={{ fontSize: "28px", fontWeight: "bold", color: "#1e293b", marginBottom: "8px" }}>
               {t("hello", language)} {userName}! 👤
             </h1>
-            <p className="mt-2 text-xs md:text-sm text-gray-600">{t("updateProfile", language)}</p>
+            <p style={{ marginTop: "8px", fontSize: "14px", color: "#64748b" }}>{t("updateProfile", language)}</p>
           </div>
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
-        <section className="rounded-2xl md:rounded-3xl bg-white p-4 md:p-6 shadow-sm">
-          <h2 className="text-base md:text-lg font-semibold mb-4">Perfil profissional</h2>
-          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+      <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "24px" }}>
+        <section style={{ borderRadius: "16px", background: "white", padding: "32px", boxShadow: "0 4px 12px rgba(15, 23, 42, 0.1)", border: "1px solid #dbeafe" }}>
+          <h2 style={{ fontSize: "20px", fontWeight: "600", marginBottom: "24px", color: "#1e293b" }}>Perfil profissional</h2>
+          <form onSubmit={handleSubmit} style={{ display: "grid", gap: "20px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
               <div>
-                <label className="block text-xs md:text-sm font-medium text-gray-700">Nome Completo *</label>
+                <label style={{ display: "block", fontSize: "14px", fontWeight: "600", color: "#1e293b", marginBottom: "8px" }}>Nome Completo *</label>
                 <input
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="Seu nome completo"
-                  className="mt-1 md:mt-2 w-full rounded-2xl border border-gray-300 p-2 md:p-3 text-sm"
+                  style={{ width: "100%", borderRadius: "10px", border: "1px solid #cbd5e1", padding: "12px", fontSize: "14px", boxSizing: "border-box", transition: "all 0.2s" }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = "#2563eb"}
+                  onBlur={(e) => e.currentTarget.style.borderColor = "#cbd5e1"}
                 />
               </div>
               <div>
-                <label className="block text-xs md:text-sm font-medium text-gray-700">Contacto *</label>
+                <label style={{ display: "block", fontSize: "14px", fontWeight: "600", color: "#1e293b", marginBottom: "8px" }}>Contacto *</label>
                 <input
                   value={contact}
                   onChange={(e) => setContact(e.target.value)}
                   placeholder="+258 84 000 0000"
-                  className="mt-1 md:mt-2 w-full rounded-2xl border border-gray-300 p-2 md:p-3 text-sm"
+                  style={{ width: "100%", borderRadius: "10px", border: "1px solid #cbd5e1", padding: "12px", fontSize: "14px", boxSizing: "border-box", transition: "all 0.2s" }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = "#2563eb"}
+                  onBlur={(e) => e.currentTarget.style.borderColor = "#cbd5e1"}
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs md:text-sm font-medium text-gray-700">Morada *</label>
+              <label style={{ display: "block", fontSize: "14px", fontWeight: "600", color: "#1e293b", marginBottom: "8px" }}>Morada *</label>
               <input
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="Rua, Cidade, Bairro"
-                className="mt-1 md:mt-2 w-full rounded-2xl border border-gray-300 p-2 md:p-3 text-sm"
+                style={{ width: "100%", borderRadius: "10px", border: "1px solid #cbd5e1", padding: "12px", fontSize: "14px", boxSizing: "border-box", transition: "all 0.2s" }}
+                onFocus={(e) => e.currentTarget.style.borderColor = "#2563eb"}
+                onBlur={(e) => e.currentTarget.style.borderColor = "#cbd5e1"}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Cargo/Profissão *</label>
+              <label style={{ display: "block", fontSize: "14px", fontWeight: "600", color: "#1e293b", marginBottom: "8px" }}>Cargo/Profissão *</label>
               <input
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Ex: Programador, Designer"
-                className="mt-2 w-full rounded-2xl border border-gray-300 p-3"
+                style={{ width: "100%", borderRadius: "10px", border: "1px solid #cbd5e1", padding: "12px", fontSize: "14px", boxSizing: "border-box", transition: "all 0.2s" }}
+                onFocus={(e) => e.currentTarget.style.borderColor = "#2563eb"}
+                onBlur={(e) => e.currentTarget.style.borderColor = "#cbd5e1"}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Resumo Profissional *</label>
+              <label style={{ display: "block", fontSize: "14px", fontWeight: "600", color: "#1e293b", marginBottom: "8px" }}>Resumo Profissional *</label>
               <textarea
                 value={summary}
                 onChange={(e) => setSummary(e.target.value)}
                 rows={4}
                 placeholder="Um resumo breve de suas competências"
-                className="mt-2 w-full rounded-2xl border border-gray-300 p-3"
+                style={{ width: "100%", borderRadius: "10px", border: "1px solid #cbd5e1", padding: "12px", fontSize: "14px", boxSizing: "border-box", transition: "all 0.2s", fontFamily: "inherit" }}
+                onFocus={(e) => e.currentTarget.style.borderColor = "#2563eb"}
+                onBlur={(e) => e.currentTarget.style.borderColor = "#cbd5e1"}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Experiência *</label>
+              <label style={{ display: "block", fontSize: "14px", fontWeight: "600", color: "#1e293b", marginBottom: "8px" }}>Experiência *</label>
               <textarea
                 value={experience}
                 onChange={(e) => setExperience(e.target.value)}
                 rows={4}
                 placeholder="Descreva sua experiência anterior"
-                className="mt-2 w-full rounded-2xl border border-gray-300 p-3"
+                style={{ width: "100%", borderRadius: "10px", border: "1px solid #cbd5e1", padding: "12px", fontSize: "14px", boxSizing: "border-box", transition: "all 0.2s", fontFamily: "inherit" }}
+                onFocus={(e) => e.currentTarget.style.borderColor = "#2563eb"}
+                onBlur={(e) => e.currentTarget.style.borderColor = "#cbd5e1"}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Upload de CV</label>
-              <div className="mt-2 flex items-center gap-3">
-                <label className="flex-1 cursor-pointer">
-                  <div className="w-full rounded-2xl border-2 border-dashed border-gray-300 p-4 text-center hover:bg-blue-50">
-                    <span className="text-sm text-gray-600">
-                      {cvFileName ? `✅ ${cvFileName}` : "Clique para enviar ou arraste aqui (PDF, Word)"}
-                    </span>
-                  </div>
-                  <input
-                    type="file"
-                    accept=".pdf,.doc,.docx"
-                    onChange={handleCVFileUpload}
-                    className="hidden"
-                  />
-                </label>
-              </div>
+              <label style={{ display: "block", fontSize: "14px", fontWeight: "600", color: "#1e293b", marginBottom: "12px" }}>Upload de CV</label>
+              <label style={{ display: "block", cursor: "pointer" }}>
+                <div style={{ width: "100%", borderRadius: "10px", border: "2px dashed #cbd5e1", padding: "24px", textAlign: "center", transition: "all 0.2s", background: "#f0f9ff" }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "#2563eb";
+                  e.currentTarget.style.background = "#dbeafe";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "#cbd5e1";
+                  e.currentTarget.style.background = "#f0f9ff";
+                }}
+                >
+                  <span style={{ fontSize: "14px", color: "#64748b", fontWeight: "500" }}>
+                    {cvFileName ? `✅ ${cvFileName}` : "📄 Clique para enviar ou arraste aqui (PDF, Word)"}
+                  </span>
+                </div>
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleCVFileUpload}
+                  style={{ display: "none" }}
+                />
+              </label>
             </div>
 
-            <button type="submit" className="w-full rounded-2xl bg-blue-600 py-3 text-white transition hover:bg-blue-700 font-semibold">
+            <button type="submit" style={{ width: "100%", borderRadius: "10px", background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)", padding: "14px", color: "white", border: "none", fontWeight: "600", fontSize: "16px", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 12px rgba(37, 99, 235, 0.3)" }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = "0 8px 20px rgba(37, 99, 235, 0.4)";
+              e.currentTarget.style.transform = "translateY(-2px)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = "0 4px 12px rgba(37, 99, 235, 0.3)";
+              e.currentTarget.style.transform = "translateY(0)";
+            }}
+            >
               Salvar Perfil
             </button>
           </form>
 
           {published && (
-            <div className="mt-6 rounded-2xl bg-green-50 p-6 border border-green-200">
-              <h3 className="font-semibold text-green-900 mb-4">✅ Perfil salvo com sucesso</h3>
-              <div className="space-y-2 text-sm text-green-800">
+            <div style={{ marginTop: "24px", borderRadius: "12px", background: "#f0fdf4", padding: "20px", border: "1px solid #86efac" }}>
+              <h3 style={{ fontWeight: "600", color: "#166534", marginBottom: "16px" }}>✅ Perfil salvo com sucesso</h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px", fontSize: "14px", color: "#166534" }}>
                 <p><strong>Nome:</strong> {fullName}</p>
                 <p><strong>Contacto:</strong> {contact}</p>
                 <p><strong>Morada:</strong> {address}</p>
@@ -202,41 +230,26 @@ export default function ProfilePage() {
           )}
 
           {notification && (
-            <p className="mt-4 rounded-2xl bg-red-50 p-4 text-sm text-red-800">{notification}</p>
+            <p style={{ marginTop: "16px", borderRadius: "10px", background: "#fef2f2", padding: "16px", fontSize: "14px", color: "#991b1b", border: "1px solid #fecaca" }}>❌ {notification}</p>
           )}
         </section>
-
-        <aside className="space-y-4">
-          <div className="rounded-3xl bg-white p-6 shadow-sm">
-            <h2 className="font-semibold mb-3">Navegação rápida</h2>
-            <div className="space-y-3">
-              <Link href="/dashboard" className="block rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-gray-700 transition hover:bg-slate-100">
-                🧭 Voltar ao dashboard
-              </Link>
-              <Link href="/dashboard" className="block rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-gray-700 transition hover:bg-slate-100">
-                🔍 Buscar vagas
-              </Link>
-              <Link href="/post" className="block rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-gray-700 transition hover:bg-slate-100">
-                ➕ Publicar vaga
-              </Link>
-            </div>
-          </div>
-        </aside>
       </div>
 
-      <footer className="fixed bottom-0 left-0 right-0 z-10 border-t border-slate-200 bg-white p-3">
-        <div className="mx-auto flex max-w-4xl items-center justify-between">
-          <div className="flex justify-around flex-1">
-            <Link href="/" className="text-blue-600 text-2xl hover:scale-110 transition">🏠</Link>
-            <Link href="/post" className="text-gray-700 text-2xl hover:scale-110 transition">➕</Link>
-            <Link href="/profile" className="text-gray-700 text-2xl hover:scale-110 transition">👤</Link>
+      <footer style={{ position: "fixed", bottom: "0", left: "0", right: "0", zIndex: "10", borderTop: "1px solid #e2e8f0", background: "white", padding: "12px 16px", boxShadow: "0 -4px 12px rgba(15, 23, 42, 0.1)" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", justifyContent: "space-around", flex: 1, gap: "16px" }}>
+            <Link href="/" style={{ fontSize: "24px", textDecoration: "none", transition: "transform 0.2s", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.2)"} onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}>🏠</Link>
+            <Link href="/post" style={{ fontSize: "24px", textDecoration: "none", color: "#64748b", transition: "transform 0.2s", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.2)"} onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}>➕</Link>
+            <Link href="/profile" style={{ fontSize: "24px", textDecoration: "none", color: "#64748b", transition: "transform 0.2s", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.2)"} onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}>👤</Link>
           </div>
           <button
             onClick={() => {
               clearAuth();
               router.push("/");
             }}
-            className="ml-4 text-sm text-red-600 hover:text-red-700 font-medium"
+            style={{ marginLeft: "16px", fontSize: "12px", color: "#ef4444", background: "none", border: "none", cursor: "pointer", fontWeight: "600", transition: "color 0.2s" }}
+            onMouseEnter={(e) => e.currentTarget.style.color = "#dc2626"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "#ef4444"}
           >
             Sair
           </button>

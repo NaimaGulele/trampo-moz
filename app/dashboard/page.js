@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getAuth, clearAuth } from "../../lib/auth";
+import { getLanguage, t } from "../../lib/i18n";
 
 export default function Dashboard() {
   const router = useRouter();
   const [isLogged, setIsLogged] = useState(false);
   const [search, setSearch] = useState("");
+  const [language, setLanguage] = useState("pt");
 
   useEffect(() => {
     const auth = getAuth();
@@ -16,6 +18,7 @@ export default function Dashboard() {
     } else {
       setIsLogged(true);
     }
+    setLanguage(getLanguage());
   }, [router]);
   const [jobs, setJobs] = useState([]);
 
@@ -39,85 +42,80 @@ export default function Dashboard() {
   if (!isLogged) return null;
 
   return (
-    <main className="min-h-screen bg-gray-50 p-3 pb-32 md:p-4">
+    <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)", padding: "20px", paddingBottom: "120px" }}>
 
-      <div className="mb-6 rounded-2xl md:rounded-3xl bg-white p-4 md:p-6 shadow-sm">
-        <h1 className="text-xl md:text-2xl font-bold">👋 Bem-vindo ao Trampo Moz</h1>
-        <p className="mt-2 text-xs md:text-sm text-gray-600 leading-relaxed">Plataforma de empregos para você encontrar vagas, publicar oportunidades e manter seu perfil profissional atualizado.</p>
+      <div style={{ marginBottom: "30px", borderRadius: "16px", background: "white", padding: "24px", boxShadow: "0 4px 12px rgba(15, 23, 42, 0.1)", border: "1px solid #dbeafe" }}>
+        <h1 style={{ fontSize: "24px", fontWeight: "bold", color: "#1e293b", marginBottom: "8px" }}>👋 {t("welcomeTitle", language)}</h1>
+        <p style={{ fontSize: "14px", color: "#64748b", lineHeight: "1.6" }}>Plataforma de empregos para você encontrar vagas, publicar oportunidades e manter seu perfil profissional atualizado.</p>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
-        <div className="space-y-4">
-          <section className="rounded-2xl md:rounded-3xl bg-white p-4 md:p-6 shadow-sm">
-            <h2 className="text-base md:text-lg font-semibold mb-3 md:mb-4">🔍 Procurar empregos</h2>
-            <input
-              type="text"
-              placeholder="Buscar por cargo, por exemplo: Recepcionista"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-2xl border border-gray-300 p-3 mb-4 text-sm md:text-base"
-            />
-            <div className="space-y-3">
-              {filteredJobs.map((job) => (
-                <div key={job.id} className="rounded-2xl md:rounded-3xl border border-slate-200 bg-slate-50 p-3 md:p-4">
-                  <div className="mb-3">
-                    <h3 className="font-semibold text-sm md:text-base">{job.title}</h3>
-                    <p className="text-xs md:text-sm text-gray-500">{job.location}</p>
-                    <p className="text-blue-600 font-bold text-sm md:text-base">{job.salary}</p>
-                  </div>
-                  <Link
-                    href={`/jobs/${job.id}/apply`}
-                    className="inline-flex w-full items-center justify-center rounded-2xl bg-green-600 px-4 py-3 text-white transition hover:bg-green-700 text-sm md:text-base font-semibold"
-                  >
-                    Candidatar-se
-                  </Link>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "24px", marginBottom: "30px" }}>
+        <section style={{ borderRadius: "16px", background: "white", padding: "24px", boxShadow: "0 4px 12px rgba(15, 23, 42, 0.1)", border: "1px solid #dbeafe" }}>
+          <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "16px", color: "#1e293b" }}>🔍 {t("searchOpportunities", language)}</h2>
+          <input
+            type="text"
+            placeholder="Buscar por cargo..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{ width: "100%", borderRadius: "12px", border: "1px solid #cbd5e1", padding: "12px", marginBottom: "16px", fontSize: "14px", boxSizing: "border-box" }}
+          />
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            {filteredJobs.map((job) => (
+              <div key={job.id} style={{ borderRadius: "12px", border: "1px solid #dbeafe", background: "#f0f9ff", padding: "16px", transition: "all 0.3s" }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#2563eb";
+                e.currentTarget.style.boxShadow = "0 4px 12px rgba(37, 99, 235, 0.15)";
+                e.currentTarget.style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#dbeafe";
+                e.currentTarget.style.boxShadow = "none";
+                e.currentTarget.style.transform = "translateY(0)";
+              }}
+              >
+                <div style={{ marginBottom: "12px" }}>
+                  <h3 style={{ fontWeight: "600", fontSize: "16px", color: "#1e293b", marginBottom: "4px" }}>{job.title}</h3>
+                  <p style={{ fontSize: "13px", color: "#64748b", marginBottom: "4px" }}>📍 {job.location}</p>
+                  <p style={{ color: "#2563eb", fontWeight: "700", fontSize: "14px" }}>💰 {job.salary}</p>
                 </div>
-              ))}
-              {filteredJobs.length === 0 && (
-                <p className="text-xs md:text-sm text-gray-500">Nenhuma vaga encontrada. Tente outra palavra-chave.</p>
-              )}
-            </div>
-          </section>
-
-        </div>
-
-        <aside className="space-y-4 hidden lg:block">
-          <div className="rounded-3xl bg-white p-6 shadow-sm">
-            <h2 className="font-semibold mb-3">Navegação rápida</h2>
-            <div className="space-y-3">
-              <Link href="/" className="block rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-gray-700 transition hover:bg-slate-100 text-sm">
-                🏠 Página inicial
-              </Link>
-              <Link href="/dashboard" className="block rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-gray-700 transition hover:bg-slate-100 text-sm">
-                🔍 Buscar vagas
-              </Link>
-              <Link href="/post" className="block rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-gray-700 transition hover:bg-slate-100 text-sm">
-                ➕ Publicar vaga
-              </Link>
-            </div>
+                <Link
+                  href={`/jobs/${job.id}/apply`}
+                  style={{ display: "block", width: "100%", borderRadius: "10px", background: "linear-gradient(135deg, #10b981 0%, #059669 100%)", padding: "12px", color: "white", textAlign: "center", textDecoration: "none", fontWeight: "600", fontSize: "14px", border: "none", cursor: "pointer", transition: "all 0.2s" }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = "0 8px 16px rgba(16, 185, 129, 0.3)";
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = "none";
+                    e.currentTarget.style.transform = "translateY(0)";
+                  }}
+                >
+                  Candidatar-se
+                </Link>
+              </div>
+            ))}
+            {filteredJobs.length === 0 && (
+              <p style={{ fontSize: "14px", color: "#64748b", textAlign: "center", padding: "20px" }}>Nenhuma vaga encontrada. Tente outra palavra-chave.</p>
+            )}
           </div>
-        </aside>
+        </section>
       </div>
 
-      <footer className="fixed bottom-0 left-0 right-0 z-10 border-t border-slate-200 bg-white p-2 md:p-3">
-        <div className="mx-auto flex max-w-4xl items-center justify-between">
-          <div className="flex justify-around flex-1 gap-2">
-            <Link href="/" className="text-blue-600 text-xl md:text-2xl hover:scale-110 transition">🏠</Link>
-            <Link href="/post" className="text-gray-700 text-xl md:text-2xl hover:scale-110 transition">➕</Link>
-            <Link
-              href="/profile"
-              className="text-gray-700 text-xl md:text-2xl hover:scale-110 transition"
-              title="Meu perfil"
-            >
-              👤
-            </Link>
+      <footer style={{ position: "fixed", bottom: "0", left: "0", right: "0", zIndex: "10", borderTop: "1px solid #e2e8f0", background: "white", padding: "12px 16px", boxShadow: "0 -4px 12px rgba(15, 23, 42, 0.1)" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", justifyContent: "space-around", flex: 1, gap: "16px" }}>
+            <Link href="/" style={{ fontSize: "24px", textDecoration: "none", transition: "transform 0.2s", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.2)"} onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}>🏠</Link>
+            <Link href="/post" style={{ fontSize: "24px", textDecoration: "none", color: "#64748b", transition: "transform 0.2s", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.2)"} onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}>➕</Link>
+            <Link href="/profile" style={{ fontSize: "24px", textDecoration: "none", color: "#64748b", transition: "transform 0.2s", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.2)"} onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"} title="Meu perfil">👤</Link>
           </div>
           <button
             onClick={() => {
               clearAuth();
               router.push("/");
             }}
-            className="ml-2 md:ml-4 text-xs md:text-sm text-red-600 hover:text-red-700 font-medium"
+            style={{ marginLeft: "16px", fontSize: "12px", color: "#ef4444", background: "none", border: "none", cursor: "pointer", fontWeight: "600", transition: "color 0.2s" }}
+            onMouseEnter={(e) => e.currentTarget.style.color = "#dc2626"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "#ef4444"}
           >
             Sair
           </button>
