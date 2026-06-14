@@ -1,5 +1,6 @@
 import './globals.css'
 import LanguageProvider from './components/LanguageProvider'
+import VisitorTracker from './components/VisitorTracker'
 
 export const metadata = {
   title: 'TrampoMoz - Plataforma de Empregos em Moçambique',
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className="app-shell">
         <LanguageProvider>
+          <VisitorTracker />
           {children}
         </LanguageProvider>
       </body>

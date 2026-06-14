@@ -96,6 +96,9 @@ export default function Dashboard() {
               <Link href="/post" className="block rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-gray-700 transition hover:bg-slate-100 text-sm">
                 ➕ {t('footer.publicar_vaga')}
               </Link>
+              <Link href="/visitors" className="block rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-gray-700 transition hover:bg-slate-100 text-sm">
+                📊 Painel de Visitantes
+              </Link>
             </div>
           </div>
         </aside>
@@ -106,6 +109,7 @@ export default function Dashboard() {
           <div className="flex justify-around flex-1 gap-2">
             <Link href="/" className="text-blue-600 text-xl md:text-2xl hover:scale-110 transition">🏠</Link>
             <Link href="/post" className="text-gray-700 text-xl md:text-2xl hover:scale-110 transition">➕</Link>
+            <Link href="/visitors" className="text-gray-700 text-xl md:text-2xl hover:scale-110 transition" title="Visitantes">📊</Link>
             <Link
               href="/profile"
               className="text-gray-700 text-xl md:text-2xl hover:scale-110 transition"
