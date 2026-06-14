@@ -1,46 +1,44 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-import { cookies } from 'next/headers';
 
 export async function POST(request) {
   try {
-    const { email, code } = await request.json();
+    const { email, code, name, message } = await request.json();
 
     if (!email || !code) {
       return NextResponse.json({ error: 'Dados inválidos.' }, { status: 400 });
     }
 
-    // Find valid OTP
-    const { data: otpRecord, error } = await supabase
+    // Find valid OTP — search by email only first, then check code
+    const { data: otpRecords, error } = await supabase
       .from('otps')
       .select('*')
       .eq('email', email)
-      .eq('code', code)
       .eq('used', false)
-      .gt('expires_at', new Date().toISOString())
       .order('created_at', { ascending: false })
-      .limit(1)
-      .single();
+      .limit(5);
 
-    if (error || !otpRecord) {
+    if (error || !otpRecords || otpRecords.length === 0) {
+      return NextResponse.json({ error: 'Código inválido ou expirado.' }, { status: 400 });
+    }
+
+    // Find matching code manually (avoids strict query timing issues)
+    const now = new Date();
+    const match = otpRecords.find(r =>
+      r.code === code && new Date(r.expires_at) > now
+    );
+
+    if (!match) {
       return NextResponse.json({ error: 'Código inválido ou expirado.' }, { status: 400 });
     }
 
     // Mark OTP as used
-    await supabase.from('otps').update({ used: true }).eq('id', otpRecord.id);
+    await supabase.from('otps').update({ used: true }).eq('id', match.id);
 
-    // Get form data from cookie
-    const cookieStore = cookies();
-    const formCookie = cookieStore.get('contact_form');
-
-    if (!formCookie) {
-      return NextResponse.json({ error: 'Sessão expirada. Por favor reenvie o formulário.' }, { status: 400 });
+    // Save message to Supabase (form data sent directly from client)
+    if (name && message) {
+      await supabase.from('contact_messages').insert([{ name, email, message }]);
     }
-
-    const { name, message } = JSON.parse(formCookie.value);
-
-    // Save message to Supabase
-    await supabase.from('contact_messages').insert([{ name, email, message }]);
 
     return NextResponse.json({ success: true });
 
