@@ -1,5 +1,10 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  'https://rvhblgwvrmilqyzjbkla.supabase.co',
+  'sb_publishable_HLfNpiWYSqiNPCN9DTy0lw_49rhUSb-'
+);
 
 export async function POST(request) {
   try {
@@ -11,10 +16,17 @@ export async function POST(request) {
 
     // Generate 6-digit OTP
     const code = Math.floor(100000 + Math.random() * 900000).toString();
-    const expires_at = new Date(Date.now() + 10 * 60 * 1000).toISOString(); // 10 min
+    const expires_at = new Date(Date.now() + 10 * 60 * 1000).toISOString();
 
-    // Save OTP + form data temporarily in otps table
-    await supabase.from('otps').insert([{ email, code, expires_at }]);
+    // Save OTP to Supabase
+    const { error: insertError } = await supabase
+      .from('otps')
+      .insert([{ email, code, expires_at }]);
+
+    if (insertError) {
+      console.error('Supabase insert error:', insertError);
+      return NextResponse.json({ error: 'Erro ao guardar OTP: ' + insertError.message }, { status: 500 });
+    }
 
     // Send OTP email via Resend
     const res = await fetch('https://api.resend.com/emails', {
@@ -48,17 +60,10 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Erro ao enviar email.' }, { status: 500 });
     }
 
-    // Store form data in session via cookie (temporary)
-    const response = NextResponse.json({ success: true });
-    response.cookies.set('contact_form', JSON.stringify({ name, email, message }), {
-      httpOnly: true,
-      maxAge: 600, // 10 min
-      path: '/',
-    });
-    return response;
+    return NextResponse.json({ success: true });
 
   } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: 'Erro interno.' }, { status: 500 });
+    console.error('Unexpected error:', err);
+    return NextResponse.json({ error: 'Erro interno: ' + err.message }, { status: 500 });
   }
 }
