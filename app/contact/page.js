@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 export default function ContactPage() {
-  const [step, setStep] = useState('form'); // 'form' | 'otp' | 'success'
+  const [step, setStep] = useState('form');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [form, setForm] = useState({ name: '', email: '', message: '' });
@@ -35,10 +35,16 @@ export default function ContactPage() {
     setLoading(true);
     setError('');
 
+    // Send form data along with OTP so no cookie is needed
     const res = await fetch('/api/verify-otp', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: form.email, code: otp }),
+      body: JSON.stringify({
+        email: form.email,
+        code: otp,
+        name: form.name,
+        message: form.message,
+      }),
     });
 
     const data = await res.json();
@@ -111,9 +117,7 @@ export default function ContactPage() {
         {step === 'otp' && (
           <>
             <h1 style={{ fontSize: '22px', fontWeight: '700', marginBottom: '6px', color: '#111' }}>Verificar Email</h1>
-            <p style={{ color: '#666', fontSize: '14px', marginBottom: '8px' }}>
-              Enviámos um código de 6 dígitos para:
-            </p>
+            <p style={{ color: '#666', fontSize: '14px', marginBottom: '8px' }}>Enviámos um código de 6 dígitos para:</p>
             <p style={{ color: '#0070f3', fontWeight: '600', fontSize: '15px', marginBottom: '24px' }}>{form.email}</p>
 
             <form onSubmit={handleVerifyOtp}>
@@ -162,7 +166,6 @@ export default function ContactPage() {
             </button>
           </div>
         )}
-
       </div>
     </main>
   );
