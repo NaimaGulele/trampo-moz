@@ -1,5 +1,10 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  'https://rvhblgwvrmilqyzjbkla.supabase.co',
+  'sb_publishable_HLfNpiWYSqiNPCN9DTy0lw_49rhUSb-'
+);
 
 export async function POST(request) {
   try {
@@ -9,7 +14,7 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Dados inválidos.' }, { status: 400 });
     }
 
-    // Find valid OTP — search by email only first, then check code
+    // Get all recent unused OTPs for this email
     const { data: otpRecords, error } = await supabase
       .from('otps')
       .select('*')
@@ -18,11 +23,15 @@ export async function POST(request) {
       .order('created_at', { ascending: false })
       .limit(5);
 
-    if (error || !otpRecords || otpRecords.length === 0) {
-      return NextResponse.json({ error: 'Código inválido ou expirado.' }, { status: 400 });
+    if (error) {
+      return NextResponse.json({ error: 'Erro na base de dados.' }, { status: 500 });
     }
 
-    // Find matching code manually (avoids strict query timing issues)
+    if (!otpRecords || otpRecords.length === 0) {
+      return NextResponse.json({ error: 'Nenhum código encontrado para este email.' }, { status: 400 });
+    }
+
+    // Find matching code
     const now = new Date();
     const match = otpRecords.find(r =>
       r.code === code && new Date(r.expires_at) > now
@@ -35,7 +44,7 @@ export async function POST(request) {
     // Mark OTP as used
     await supabase.from('otps').update({ used: true }).eq('id', match.id);
 
-    // Save message to Supabase (form data sent directly from client)
+    // Save message
     if (name && message) {
       await supabase.from('contact_messages').insert([{ name, email, message }]);
     }
