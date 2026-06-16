@@ -68,7 +68,7 @@ export async function POST(request) {
     });
 
   } catch (error) {
-    console.error('Error in initiate-payment API:', error);
+    setError(JSON.stringify(mpesaData));
     return NextResponse.json(
       { 
         error: 'Internal server error',
