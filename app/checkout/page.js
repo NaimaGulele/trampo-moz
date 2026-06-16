@@ -27,11 +27,69 @@ function CheckoutContent() {
     setError('');
     setStep('processing');
 
-    // Simulate M-Pesa push notification (2 seconds)
-    await new Promise(r => setTimeout(r, 2000));
-
     try {
-      const res = await fetch('/api/create-order', {
+      // Step 1: Initiate M-Pesa payment
+      const mpesaRes = await fetch('/api/mpesa/initiate-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: 500,
+          phone: form.phone.replace(/\s/g, ''),
+          customerName: form.name,
+          email: form.email,
+          jobTitle: jobTitle,
+          company: company
+        }),
+      });
+
+      const mpesaData = await mpesaRes.json();
+      
+      if (!mpesaRes.ok) {
+        setError(mpesaData.error || 'Erro ao iniciar pagamento M-Pesa.');
+        setStep('form');
+        setLoading(false);
+        return;
+      }
+
+      // Poll payment status until completed, cancelled, or timeout
+      const maxAttempts = 20;
+      let paymentConfirmed = false;
+
+      for (let i = 0; i < maxAttempts; i++) {
+        await new Promise(r => setTimeout(r, 3000));
+
+        const statusRes = await fetch('/api/mpesa/check-status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            transactionId: mpesaData.conversationId || mpesaData.transactionId,
+            thirdPartyReference: mpesaData.thirdPartyReference,
+          }),
+        });
+
+        const statusData = await statusRes.json();
+
+        if (statusData.transactionStatus === 'Completed') {
+          paymentConfirmed = true;
+          break;
+        }
+        if (statusData.transactionStatus === 'Cancelled' || statusData.transactionStatus === 'Failed') {
+          setError('Pagamento cancelado ou falhou. Por favor tente novamente.');
+          setStep('form');
+          setLoading(false);
+          return;
+        }
+      }
+
+      if (!paymentConfirmed) {
+        setError('Tempo esgotado. Confirme o pagamento no telemóvel e tente novamente.');
+        setStep('form');
+        setLoading(false);
+        return;
+      }
+
+      // Step 2: Create order with M-Pesa transaction details
+      const orderRes = await fetch('/api/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -41,12 +99,14 @@ function CheckoutContent() {
           job_title: jobTitle,
           company,
           amount: 500,
+          mpesaTransactionId: mpesaData.transactionId,
+          mpesaReference: mpesaData.thirdPartyReference
         }),
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || 'Erro ao processar pedido.');
+      const orderData = await orderRes.json();
+      if (!orderRes.ok) {
+        setError(orderData.error || 'Erro ao processar pedido.');
         setStep('form');
         setLoading(false);
         return;
@@ -54,7 +114,8 @@ function CheckoutContent() {
 
       setStep('success');
     } catch (err) {
-      setError('Erro de ligação.');
+      console.error('Payment error:', err);
+      setError('Erro de ligação. Por favor tente novamente.');
       setStep('form');
     }
     setLoading(false);

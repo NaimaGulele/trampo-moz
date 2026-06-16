@@ -17,16 +17,27 @@ const transporter = nodemailer.createTransport({
 
 export async function POST(request) {
   try {
-    const { name, email, phone, job_title, company, amount } = await request.json();
+    const { name, email, phone, job_title, company, amount, mpesaTransactionId, mpesaReference } = await request.json();
 
     if (!name || !email || !phone || !job_title || !company) {
       return NextResponse.json({ error: 'Dados incompletos.' }, { status: 400 });
     }
 
-    // Save order to Supabase
+    // Save order to Supabase with M-Pesa transaction details
     const { data: order, error: insertError } = await supabase
       .from('orders')
-      .insert([{ name, email, phone, job_title, company, amount, status: 'paid' }])
+      .insert([{ 
+        name, 
+        email, 
+        phone, 
+        job_title, 
+        company, 
+        amount, 
+        status: 'paid',
+        mpesa_transaction_id: mpesaTransactionId || null,
+        mpesa_reference: mpesaReference || null,
+        payment_method: 'mpesa'
+      }])
       .select()
       .single();
 
