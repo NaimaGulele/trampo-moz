@@ -45,7 +45,7 @@ function CheckoutContent() {
       const mpesaData = await mpesaRes.json();
       
       if (!mpesaRes.ok) {
-        setError(mpesaData.error || 'Erro ao iniciar pagamento M-Pesa.');
+        setError(JSON.stringify(mpesaData));
         setStep('form');
         setLoading(false);
         return;
